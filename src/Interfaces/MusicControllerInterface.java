@@ -7,13 +7,21 @@ import Objects.Playlist;
 import Objects.Song;
 
 public interface MusicControllerInterface {
-	ArrayList<Song>		searchSong(String name);
-	ArrayList<Artist>	searchArtist(String name);
-	ArrayList<Album>	searchAlbum(String name);
-	ArrayList<Playlist>	searchPlaylist(String name);
-	ArrayList<Song>		searchTopSongs(int artistID);
+	ArrayList<Song>		searchSong(String songName);
+	
+	ArrayList<Artist>	searchArtist(String artistName);
+	
+	ArrayList<Album>	searchAlbum(String albumName);
+	
+	ArrayList<Playlist>	searchPlaylist(String playlistName);
+	
+	ArrayList<Song>		searchTopSongs(String artistName);
+	
 	Playlist			createPlaylist(String playlistName);
+	
 	boolean				addSong(int songID, int playlistID);
+	
 	boolean				deleteSong(int songID, int playlistID);
+	
 	ArrayList<Song>		listSongs(int playlistID);
 }

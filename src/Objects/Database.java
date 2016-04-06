@@ -26,12 +26,14 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 
-			ResultSet results = statement.executeQuery("SELECT * FROM Playlist WHERE playlistID = " +playlistID +" AND songID = " +songID);
-			
-			// Create the song object by passing the song name
-			// This will also use 
-			Song song = new Song(results.getString(2), "ddew");
-			return song;
+//			String query = "SELECT playlists.PlaylistName FROM PlaylistSongs"
+//					+ "";
+//			ResultSet results = statement.executeQuery("SELECT  FROM Playlist WHERE playlistID = " +playlistID +" AND songID = " +songID);
+//			
+//			// Create the song object by passing the song name
+//			// This will also use 
+//			Song song = new Song(results.getString(2), "ddew");
+//			return song;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -175,7 +177,7 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			String query =   "SELECT songs.SongName, artists.ArtistName "
+			String query =   "SELECT songs.SongName, artists.ArtistName, songs.Plays "
 							+"FROM Songs songs "
 							+"INNER JOIN Artists artists ON (songs.ArtistID = artists.ID)";
 //							+"WHERE songs.SongName = '" +name +"'";
@@ -184,7 +186,7 @@ public class Database implements DatabaseInterface {
 			
 			ArrayList<Song> songs = new ArrayList<Song>();
 			while(results.next()) {
-				songs.add(new Song(results.getString("songs.SongName"), results.getString("artists.ArtistName")));
+				songs.add(new Song(results.getString("songs.SongName"), results.getString("artists.ArtistName"), results.getInt("Plays")));
 			}
 			
 			return songs;
@@ -196,16 +198,18 @@ public class Database implements DatabaseInterface {
 	}
 
 	@Override
-	public ArrayList<Song> getTopSongs(int artistID) {		
+	public ArrayList<Song> getTopSongs(String artistName) {		
 		try {
 			statement = database.createStatement();
 			
-			String query = "SELECT * FROM Songs ORDER BY Plays DESC";
+			String query = "SELECT songs.SongName, artists.ArtistName, songs.Plays FROM Songs "
+					+ "INNER JOIN Artists artists ON (Songs.ArtistID = artists.ID) "
+					+ "ORDER BY Plays DESC";
 			ResultSet results = statement.executeQuery(query);
 			
 			ArrayList<Song> songs = new ArrayList<Song>();
 			while(results.next()) {
-				songs.add(new Song(results.getString("SongName"), "eeee"));
+				songs.add(new Song(results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
 			}
 			
 			return songs;

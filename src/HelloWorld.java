@@ -10,10 +10,7 @@ public class HelloWorld {
 		//WHERE ArtistID = " +artistID +" 
 		// Right now this gets all songs!!!
 		//ArrayList<Song> songs = musicController.searchSong("Boulevard of Broken Dreams");
-		ArrayList<Song> songs = musicController.searchTopSongs(1);
-		for(Song s : songs) {
-			System.out.println(s.getName() +" - " +s.getArtist());
-		}
+		musicController.searchTopSongs("");
 		
 		// Design flaw: When we are searching songs, should we be creating them with Artist and Album objects?
 		// If we do this, we would have to build an artist and album for every song retrieved from the database

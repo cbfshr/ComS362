@@ -23,7 +23,7 @@ public interface DatabaseInterface {
 
     ArrayList<Song>		getAllSongs(String songName);
     
-    ArrayList<Song>		getTopSongs(int artistID);
+    ArrayList<Song>		getTopSongs(String artistName);
     
     ArrayList<Playlist>	getAllPlaylists(String playlistName);
 }

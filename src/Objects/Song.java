@@ -6,12 +6,14 @@ public class Song implements SongInterface {
 	int ID;
 	private String name;
 	private String artist;
-	private Album album;
+	private String album;
+	private int plays;
 //	String genre;
 	
-	public Song(String name, String artist) {
+	public Song(String name, String artist, int plays) {
 		this.name = name;
 		this.artist = artist;
+		this.plays = plays;
 	}
 
 	@Override
@@ -26,7 +28,10 @@ public class Song implements SongInterface {
 
 	@Override
 	public String getAlbum() {
-		// TODO Auto-generated method stub
-		return null;
+		return album;
+	}
+	
+	public int getPlays() {
+		return plays;
 	}
 }

@@ -27,8 +27,8 @@ public class Search implements SearchInterface {
 	}
 
 	@Override
-	public ArrayList<Song> searchTopSongs(int artistID) {
-		return database.getTopSongs(artistID);
+	public ArrayList<Song> searchTopSongs(String artistName) {
+		return database.getTopSongs(artistName);
 	}
 
 	@Override

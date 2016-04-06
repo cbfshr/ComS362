@@ -74,5 +74,4 @@ public class MusicLibrary implements LibraryInterface {
 	public Playlist getPlaylist(int playlistID) {
 		return database.getPlaylist(playlistID);
 	}
-
 }

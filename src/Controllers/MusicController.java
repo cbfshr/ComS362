@@ -43,8 +43,16 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public ArrayList<Song> searchTopSongs(int artistID) {
-		return search.searchTopSongs(artistID);
+	public ArrayList<Song> searchTopSongs(String artistName) {
+		ArrayList<Song> songs = search.searchTopSongs(artistName);
+		int i = 1;
+		
+		for(Song s : songs) {
+			System.out.println(i +".) " +s.getName() +" - " +s.getArtist() +" (Plays: " +s.getPlays() +")");
+			i++;
+		}
+		
+		return songs;
 	}
 
 	@Override
