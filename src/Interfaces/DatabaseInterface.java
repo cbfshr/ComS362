@@ -8,19 +8,22 @@ import Objects.Song;
 
 public interface DatabaseInterface {
 	Song				getSong(int songID, int playlistID);
+	
     Artist				getArtist(int artistID);
     
     Playlist			getPlaylist(int playlistID);
 
     Playlist			getPlaylist(String playlistName);
     
-    boolean				putPlaylist(Playlist p);
+    boolean				putPlaylist(Playlist playlist);
     
-    ArrayList<Album>	getAllAlbums(String name);
+    ArrayList<Album>	getAllAlbums(String albumName);
     
-    ArrayList<Artist>	getAllArtists(String name);
+    ArrayList<Artist>	getAllArtists(String artistName);
+
+    ArrayList<Song>		getAllSongs(String songName);
     
-    ArrayList<Song>		getAllSongs(String name);
+    ArrayList<Song>		getTopSongs(int artistID);
     
-    ArrayList<Playlist>	getAllPlaylists(String name);
+    ArrayList<Playlist>	getAllPlaylists(String playlistName);
 }

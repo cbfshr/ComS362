@@ -2,46 +2,54 @@ package Controllers;
 import java.util.ArrayList;
 
 import Interfaces.MusicControllerInterface;
+import Managers.MusicLibrary;
+import Managers.Search;
 import Objects.Album;
 import Objects.Artist;
+import Objects.Database;
 import Objects.Playlist;
 import Objects.Song;
 
 public class MusicController implements MusicControllerInterface {
-
+	private Search search;
+	private MusicLibrary musicLibrary;
+	
+	public MusicController() {
+		// Connect to database
+		Database database = new Database();
+		
+		this.musicLibrary = new MusicLibrary(database);
+		this.search = new Search(database);
+	}
+	
 	@Override
 	public ArrayList<Song> searchSong(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return search.searchSong(name);
 	}
 
 	@Override
 	public ArrayList<Artist> searchArtist(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return search.searchArtist(name);
 	}
 
 	@Override
 	public ArrayList<Album> searchAlbum(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return search.searchAlbum(name);
 	}
 
 	@Override
 	public ArrayList<Playlist> searchPlaylist(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return search.searchPlaylist(name);
 	}
 
 	@Override
 	public ArrayList<Song> searchTopSongs(int artistID) {
-		// TODO Auto-generated method stub
-		return null;
+		return search.searchTopSongs(artistID);
 	}
 
 	@Override
 	public Playlist createPlaylist(String playlistName) {
-		// TODO Auto-generated method stub
+		//return musicLibrary.createPlaylist(playlistName);
 		return null;
 	}
 

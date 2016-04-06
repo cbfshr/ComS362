@@ -1,16 +1,17 @@
-package Controllers;
+package Managers;
 
 import java.util.ArrayList;
 
 import Interfaces.LibraryInterface;
+import Objects.Database;
 import Objects.Playlist;
 import Objects.Song;
 
 public class MusicLibrary implements LibraryInterface {
-	private DatabaseController database;
+	private Database database;
 	
-	public MusicLibrary() {
-		this.database = new DatabaseController();
+	public MusicLibrary(Database database) {
+		this.database = database;
 	}
 	
 	@Override
@@ -28,6 +29,7 @@ public class MusicLibrary implements LibraryInterface {
 	@Override
 	public boolean createPlaylist(String name) {
 		// Check if the playlist already exists
+		// This should be done in the database!
 		if(database.getPlaylist(name) != null) {
 			return false;
 		}
