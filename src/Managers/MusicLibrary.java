@@ -43,14 +43,26 @@ public class MusicLibrary implements LibraryInterface {
 
 	@Override
 	public boolean deleteSong(int songID, int playlistID) {
-		// TODO Auto-generated method stub
-		return false;
+		Playlist playlist = database.getPlaylist(playlistID);
+		
+		if(playlist == null) {
+			System.err.println("Playlist not found!");
+			return false;
+		} else {
+			return playlist.deleteSong(songID);
+		}
 	}
 
 	@Override
 	public ArrayList<Song> listSongs(int playlistID) {
-		// TODO Auto-generated method stub
-		return null;
+		Playlist playlist = database.getPlaylist(playlistID);
+		
+		if(playlist == null) {
+			System.err.println("Playlist not found!");
+			return null;
+		} else {
+			return playlist.getAllSongs();
+		}
 	}
 
 	@Override
