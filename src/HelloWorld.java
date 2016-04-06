@@ -1,29 +1,21 @@
-import java.util.ArrayList;
-
+import Controllers.MusicLibrary;
 import Objects.Playlist;
-import Objects.Song;
 
 public class HelloWorld {
 	public static void main(String[] args) {
-		System.err.println("This class is my favorite in the entire world!");
+		MusicLibrary musicLibrary = new MusicLibrary();
 		
-		// Create a list of songs
-		ArrayList<Song> songs = new ArrayList<Song>();
-		songs.add(new Song(1, "Hello, world!"));
-		songs.add(new Song(2, "Goodbye, world... :("));
+		// Create a new playlist
+		if(!musicLibrary.createPlaylist("Playlist1")) {
+			System.err.println("There was an error creating the playlist.");
+		}
 		
-		// Create a playlist
-		Playlist playlist = new Playlist(1231, "Best Playlist", songs);
-		
-		// Add a song to playlist
-		playlist.addSong(new Song(3, "What up, world?"));
-		
-		// Get all songs in the playlist
-		ArrayList<Song> blah = playlist.getAllSongs();
-		
-		// List all the songs in the playlist
-		for(Song s : blah) {
-			System.err.println(s.getName());
+		// Get playlist
+		Playlist playlist = musicLibrary.getPlaylist("Playlist1");
+		if(playlist != null) {
+			System.err.println("The playlist, " +playlist.getName() +" has been retrieved.");
+		} else {
+			System.err.println("There was an error getting the playlist.");
 		}
 	}
 }

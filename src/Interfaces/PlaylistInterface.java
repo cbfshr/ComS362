@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import Objects.Song;
 
 public interface PlaylistInterface {
-	boolean			create(String name);
+	String			getName();
+	
 	boolean			addSong(Song song);
+	
 	boolean			deleteSong(int songID);
+	
 	ArrayList<Song>	getAllSongs();
 }

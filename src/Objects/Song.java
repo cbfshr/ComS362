@@ -3,14 +3,13 @@ package Objects;
 import Interfaces.SongInterface;
 
 public class Song implements SongInterface {
-	int ID;
+//	int ID;
 	String name;
 //	Album album;
 //	Artist artist;
 //	String genre;
 	
-	public Song(int ID, String name) {
-		this.ID = ID;
+	public Song(String name) {
 		this.name = name;
 	}
 

@@ -5,22 +5,20 @@ import java.util.ArrayList;
 import Interfaces.PlaylistInterface;
 
 public class Playlist implements PlaylistInterface {
-	int ID;
-	String playlistName;
-	ArrayList<Song> songs;
+	private String playlistName;
+	private ArrayList<Song> songs;
 	
-	public Playlist(int ID, String playlistName, ArrayList<Song> songs) {
-		this.ID = ID;
+	public Playlist(String playlistName) {
 		this.playlistName = playlistName;
-		this.songs = songs;
+		
+		songs = new ArrayList<Song>();
 	}
 
 	@Override
-	public boolean create(String name) {
-		// TODO Auto-generated method stub
-		return false;
+	public String getName() {
+		return playlistName;
 	}
-
+	
 	@Override
 	public boolean addSong(Song song) {
 		return songs.add(song);
