@@ -3,15 +3,25 @@ package Objects;
 import java.util.ArrayList;
 
 public class Album {
-	int ID;
-	Artist artist;
-	String name;
-	ArrayList<Song> songs;
+//	int ID;
+	private String artist;
+	private String albumName;
+	private ArrayList<Song> songs;
 	
-	public Album(int ID, Artist artist, String name, ArrayList<Song> songs) {
-		this.ID = ID;
+	public Album(String albumName, String artist) {
+		this.albumName = albumName;
 		this.artist = artist;
-		this.name = name;
-		this.songs = songs;
+	}
+
+	public String getArtist() {
+		return artist;
+	}
+	
+	public String getName() {
+		return albumName;
+	}
+	
+	public ArrayList<Song> getSongs() {
+		return songs;
 	}
 }

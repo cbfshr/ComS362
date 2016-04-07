@@ -17,7 +17,9 @@ public interface MusicControllerInterface {
 	
 	ArrayList<Song>		searchTopSongs(String artistName);
 	
-	Playlist			createPlaylist(String playlistName);
+	boolean				createPlaylist(String playlistName);
+	
+	void				getPlaylist(String playlistName);
 	
 	boolean				addSong(int songID, int playlistID);
 	

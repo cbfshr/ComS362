@@ -17,28 +17,59 @@ public class Search implements SearchInterface {
 	}
 	
 	@Override
-	public ArrayList<Album> searchAlbum(String name) {
-		return database.getAllAlbums(name);
+	public ArrayList<Album> searchAlbum(String albumName) {
+		ArrayList<Album> albums = database.getAllAlbums(albumName);
+		
+		for(Album album :albums) {
+			System.out.println(album.getName() +" - " +album.getArtist());
+		}
+		
+		return albums;
 	}
 
 	@Override
 	public ArrayList<Artist> searchArtist(String name) {
-		return database.getAllArtists(name);
+		ArrayList<Artist> artists = database.getAllArtists(name);
+		
+		for(Artist artist : artists) {
+			System.out.println(artist.getArtistName());
+		}
+		
+		return artists;
+	}
+	
+	@Override
+	public ArrayList<Song> searchSong(String name) {
+		ArrayList<Song> songs = database.getAllSongs(name);
+
+		for(Song s : songs) {
+			System.out.println(s.getName() +" - " +s.getArtist());
+		}
+		
+		return songs;
 	}
 
 	@Override
 	public ArrayList<Song> searchTopSongs(String artistName) {
-		return database.getTopSongs(artistName);
+		ArrayList<Song> songs = database.getTopSongs(artistName);
+		int i = 1;
+		
+		for(Song s : songs) {
+			System.out.println(i +".) " +s.getName() +" - " +s.getArtist() +" (Plays: " +s.getPlays() +")");
+			i++;
+		}
+		
+		return songs;
 	}
 
 	@Override
 	public ArrayList<Playlist> searchPlaylist(String name) {
-		return database.getAllPlaylists(name);
+		ArrayList<Playlist> playlists = database.getAllPlaylists(name);
+		
+		for(Playlist playlist : playlists) {
+			System.out.println(playlist.getName());
+		}
+		
+		return playlists;
 	}
-
-	@Override
-	public ArrayList<Song> searchSong(String name) {
-		return database.getAllSongs(name);
-	}
-
 }

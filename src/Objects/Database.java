@@ -23,21 +23,21 @@ public class Database implements DatabaseInterface {
 	
 	@Override
 	public Song getSong(int songID, int playlistID) {
-		try {
-			statement = database.createStatement();
-
-//			String query = "SELECT playlists.PlaylistName FROM PlaylistSongs"
-//					+ "";
-//			ResultSet results = statement.executeQuery("SELECT  FROM Playlist WHERE playlistID = " +playlistID +" AND songID = " +songID);
-//			
-//			// Create the song object by passing the song name
-//			// This will also use 
-//			Song song = new Song(results.getString(2), "ddew");
-//			return song;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			statement = database.createStatement();
+//
+////			String query = "SELECT playlists.PlaylistName FROM PlaylistSongs"
+////					+ "";
+////			ResultSet results = statement.executeQuery("SELECT  FROM Playlist WHERE playlistID = " +playlistID +" AND songID = " +songID);
+////			
+////			// Create the song object by passing the song name
+////			// This will also use 
+////			Song song = new Song(results.getString(2), "ddew");
+////			return song;
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 
@@ -49,36 +49,36 @@ public class Database implements DatabaseInterface {
 
 	@Override
 	public Playlist getPlaylist(int playlistID) {
-		try {
-			statement = database.createStatement();
-			
-			// Check that the playlist exists
-			ResultSet playlistInfo = statement.executeQuery("SELECT * FROM PlaylistInfo WHERE playlistID = " +playlistID);
-
-			// If the playlist does not exist, the query results will be empty
-			if(!playlistInfo.next()) {
-				return null;
-			}
-			
-			// To create the playlist, we need the name, which we can grab 
-			Playlist playlist = new Playlist(playlistInfo.getString(2));
-
-			// Get all the songs in the playlist
-			// This will return a bunch of tuples that we can build into the list of songs in the playlist
-			// results = database.query("SELECT * FROM Playlist WHERE playlistID = playlistID");
-			
-			// To create the list of songs...
-			// Check the syntax necessary for this
-			// for(tuple t : results) {
-			//		playlist.add(new Song(t.songID, t.songName);
-			// }
-
-			System.out.println("Playlist has been retrieved from the database.");
-			return playlist;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			statement = database.createStatement();
+//			
+//			// Check that the playlist exists
+//			ResultSet playlistInfo = statement.executeQuery("SELECT * FROM PlaylistInfo WHERE playlistID = " +playlistID);
+//
+//			// If the playlist does not exist, the query results will be empty
+//			if(!playlistInfo.next()) {
+//				return null;
+//			}
+//			
+//			// To create the playlist, we need the name, which we can grab 
+//			Playlist playlist = new Playlist(playlistInfo.getString(2));
+//
+//			// Get all the songs in the playlist
+//			// This will return a bunch of tuples that we can build into the list of songs in the playlist
+//			// results = database.query("SELECT * FROM Playlist WHERE playlistID = playlistID");
+//			
+//			// To create the list of songs...
+//			// Check the syntax necessary for this
+//			// for(tuple t : results) {
+//			//		playlist.add(new Song(t.songID, t.songName);
+//			// }
+//
+//			System.out.println("Playlist has been retrieved from the database.");
+//			return playlist;
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 	
@@ -87,26 +87,37 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			// Check that the playlist exists
-			ResultSet playlistInfo = statement.executeQuery("SELECT * FROM PlaylistInfo WHERE playlistName = '" +playlistName +"'");
+			String playlistQuery =   "SELECT ID FROM Playlists "
+									+"WHERE playlistName = '" +playlistName +"'";
+			ResultSet playlistInfo = statement.executeQuery(playlistQuery);
 	
 			// If the playlist does not exist, the query results will be empty
 			if(!playlistInfo.next()) {
 				return null;
 			}
 			
-			// To create the playlist, we need the name, which we can grab 
-			Playlist playlist = new Playlist(playlistInfo.getString(2));
+			// To create the playlist, we need the ID and name, which we can grab 
+			int playlistID = playlistInfo.getInt("ID");
+			Playlist playlist = new Playlist(playlistID, playlistName);
 	
 			// Get all the songs in the playlist
 			// This will return a bunch of tuples that we can build into the list of songs in the playlist
 			// results = database.query("SELECT * FROM Playlist WHERE playlistID = playlistID");
 			
+			String playlistSongsQuery =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Plays FROM PlaylistSongs playlistSongs "
+										//+"WHERE PlaylistID = " +playlistID +" "
+										+"INNER JOIN Songs songs ON (playlistSongs.SongID = songs.ID) "
+//										+"INNER JOIN Playlists playlists ON (playlistSongs.PlaylistID = playlists.ID) "
+										+"	INNER JOIN Artists artists ON (songs.ArtistID = artists.ID) "
+										+"	INNER JOIN Albums albums ON (songs.AlbumID = albums.ID)";
+			ResultSet results = statement.executeQuery(playlistSongsQuery);
+			
+			
 			// To create the list of songs...
 			// Check the syntax necessary for this
-			// for(tuple t : results) {
-			//		playlist.add(new Song(t.songID, t.songName);
-			// }
+			while(results.next()) {
+					playlist.addSong(new Song(results.getInt("ID"), results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
+			}
 			
 			System.out.println("Playlist has been retrieved from the database.");
 			return playlist;
@@ -119,28 +130,29 @@ public class Database implements DatabaseInterface {
 
 	@Override
 	public boolean putPlaylist(Playlist playlist) {
-		// For every song in the playlist,
-		// Either we can go through the list of songs
-		//     OR
-		// We can build a string of IDs and place them
-		
-		// I prefer the first option
-		
 		try {
-			// Check if the playlist name already exists
-			// if(getPlaylist(playlist.name) != null)
-			// return false;
-			// }
-			
 			statement = database.createStatement();
 			
-			// Check that the playlist exists
-			statement.executeUpdate("INSERT INTO PlaylistInfo(playlistName) values('" +playlist.getName() +"')");
-			System.out.println("Playlist has been put into database.");
+			// Check if the playlist already exists
+			if(getPlaylist(playlist.getName()) != null) {
+				// If it exists, UPDATE
+				String query =   "UPDATE Playlists "
+								+"SET PlaylistName = '" +playlist.getName() +"'"
+								+"WHERE ID = '" +playlist.getID() +"'";
+				statement.executeUpdate(query);
+				
+				// Do stuff to update the songs
+			} else {
+				// If it doesn't exist, INSERT
+				String query =   "INSERT INTO Playlists(PlaylistName) "
+								+"VALUES('" +playlist.getName() +"')";
+				statement.executeUpdate(query);
+				
+				// Do stuff to insert the songs
+			}
 			
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
@@ -148,8 +160,26 @@ public class Database implements DatabaseInterface {
 	}
 
 	@Override
-	public ArrayList<Album> getAllAlbums(String name) {
-		// TODO Auto-generated method stub
+	public ArrayList<Album> getAllAlbums(String albumName) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "SELECT albums.AlbumName, artists.ArtistName "
+							+"FROM Albums albums "
+							+"INNER JOIN Artists artists ON (albums.ArtistID = artists.ID)";
+//							+"WHERE ArtistName = '" +albumName +"'";
+			ResultSet results = statement.executeQuery(query);
+			
+			ArrayList<Album> albums = new ArrayList<Album>();
+			while(results.next()) {
+				albums.add(new Album(results.getString("AlbumName"), results.getString("ArtistName")));
+			}
+			
+			return albums;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
@@ -158,17 +188,20 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			ResultSet results = statement.executeQuery("SELECT * FROM Artists WHERE ArtistName = '" +artistName +"'");
+			String query =   "SELECT * FROM Artists ";
+//							+"WHERE ArtistName = '" +artistName +"'";
+			ResultSet results = statement.executeQuery(query);
 			
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			while(results.next()) {
-				artists.add(new Artist(1, results.getString("ArtistName"), null, null, null));
+				artists.add(new Artist(results.getString("ArtistName"), null, null, null));
 			}
 			
 			return artists;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 
@@ -202,9 +235,9 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			String query = "SELECT songs.SongName, artists.ArtistName, songs.Plays FROM Songs "
-					+ "INNER JOIN Artists artists ON (Songs.ArtistID = artists.ID) "
-					+ "ORDER BY Plays DESC";
+			String query =   "SELECT songs.SongName, artists.ArtistName, songs.Plays FROM Songs "
+							+"INNER JOIN Artists artists ON (Songs.ArtistID = artists.ID) "
+							+"ORDER BY Plays DESC";
 			ResultSet results = statement.executeQuery(query);
 			
 			ArrayList<Song> songs = new ArrayList<Song>();
@@ -225,7 +258,9 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			ResultSet results = statement.executeQuery("SELECT * FROM Playlists WHERE PlaylistName = '" +name +"'");
+			String query =   "SELECT * FROM Playlists ";
+//							+"WHERE PlaylistName = '" +name +"'";
+			ResultSet results = statement.executeQuery(query);
 			
 			ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 			while(results.next()) {

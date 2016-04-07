@@ -27,18 +27,21 @@ public class MusicLibrary implements LibraryInterface {
 	}
 
 	@Override
-	public boolean createPlaylist(String name) {
-		// Check if the playlist already exists
-		// This should be done in the database!
-		if(database.getPlaylist(name) != null) {
+	public boolean createPlaylist(String playlistName) {
+		// Create the new playlist
+		Playlist playlist = new Playlist(playlistName);
+		
+		// Put the playlist in the database
+		boolean putPlaylist = database.putPlaylist(playlist);
+		
+		if(putPlaylist == true) {
+			System.out.println("The playlist, " +playlistName +" has been created.");
+		} else {
+			System.err.println("There was an error creating your playlist.");
 			return false;
 		}
 		
-		// Create the new playlist
-		Playlist playlist = new Playlist(name);
-		
-		// Put the playlist in the database
-		return database.putPlaylist(playlist);
+		return putPlaylist;
 	}
 
 	@Override
@@ -67,7 +70,13 @@ public class MusicLibrary implements LibraryInterface {
 
 	@Override
 	public Playlist getPlaylist(String playlistName) {
-		return database.getPlaylist(playlistName);
+		Playlist playlist = database.getPlaylist(playlistName);
+		
+		for(Song s : playlist.getAllSongs()) {
+			System.out.println(s.getName() +" - " +s.getArtist() +" (Playlist: " +playlist.getName() +")");
+		}
+		
+		return playlist;
 	}
 
 	@Override

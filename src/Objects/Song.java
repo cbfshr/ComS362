@@ -10,12 +10,19 @@ public class Song implements SongInterface {
 	private int plays;
 //	String genre;
 	
-	public Song(String name, String artist, int plays) {
-		this.name = name;
+	public Song(String songName, String artist, int plays) {
+		this.name = songName;
 		this.artist = artist;
 		this.plays = plays;
 	}
 
+	public Song(int ID, String songName, String artist, int plays) {
+		this.ID = ID;
+		this.name = songName;
+		this.artist = artist;
+		this.plays = plays;
+	}
+	
 	@Override
 	public String getName() {
 		return name;
@@ -31,6 +38,7 @@ public class Song implements SongInterface {
 		return album;
 	}
 	
+	@Override
 	public int getPlays() {
 		return plays;
 	}

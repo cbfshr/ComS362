@@ -11,9 +11,9 @@ public interface SearchInterface {
 	
 	ArrayList<Artist>	searchArtist(String name);
 	
+	ArrayList<Song>		searchSong(String name);
+	
 	ArrayList<Song>		searchTopSongs(String artistName);
 	
 	ArrayList<Playlist>	searchPlaylist(String name);
-	
-	ArrayList<Song>		searchSong(String name);
 }

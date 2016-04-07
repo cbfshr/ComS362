@@ -104,7 +104,3 @@ SHOW TABLES;
 SELECT * FROM Artists;
 SELECT * FROM Albums;
 SELECT * FROM Songs;
-
-
-
-

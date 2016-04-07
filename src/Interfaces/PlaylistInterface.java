@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Objects.Song;
 
 public interface PlaylistInterface {
+	int 			getID();
+	
 	String			getName();
 	
 	boolean			addSong(Song song);

@@ -33,8 +33,8 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public ArrayList<Album> searchAlbum(String name) {
-		return search.searchAlbum(name);
+	public ArrayList<Album> searchAlbum(String albumName) {
+		return search.searchAlbum(albumName);
 	}
 
 	@Override
@@ -44,21 +44,21 @@ public class MusicController implements MusicControllerInterface {
 
 	@Override
 	public ArrayList<Song> searchTopSongs(String artistName) {
-		ArrayList<Song> songs = search.searchTopSongs(artistName);
-		int i = 1;
-		
-		for(Song s : songs) {
-			System.out.println(i +".) " +s.getName() +" - " +s.getArtist() +" (Plays: " +s.getPlays() +")");
-			i++;
-		}
-		
-		return songs;
+		return search.searchTopSongs(artistName);
+	}
+
+	// -----------------------------------------------------------------------------------------
+	// MusicLibrary Methods
+	// -----------------------------------------------------------------------------------------
+	
+	@Override
+	public boolean createPlaylist(String playlistName) {
+		return musicLibrary.createPlaylist(playlistName);
 	}
 
 	@Override
-	public Playlist createPlaylist(String playlistName) {
-		//return musicLibrary.createPlaylist(playlistName);
-		return null;
+	public void getPlaylist(String playlistName) {
+		musicLibrary.getPlaylist(playlistName);
 	}
 
 	@Override
@@ -78,5 +78,9 @@ public class MusicController implements MusicControllerInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public ArrayList<Song> listSongs(String playlistName) {
+		
+		return null;
+	}
 }

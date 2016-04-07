@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Interfaces.PlaylistInterface;
 
 public class Playlist implements PlaylistInterface {
+	private int ID;
 	private String playlistName;
 	private ArrayList<Song> songs;
 	
@@ -12,6 +13,18 @@ public class Playlist implements PlaylistInterface {
 		this.playlistName = playlistName;
 		
 		songs = new ArrayList<Song>();
+	}
+	
+	public Playlist(int playlistID, String playlistName) {
+		this.ID = playlistID;
+		this.playlistName = playlistName;
+		
+		songs = new ArrayList<Song>();
+	}
+	
+	@Override
+	public int getID() {
+		return ID;
 	}
 
 	@Override
