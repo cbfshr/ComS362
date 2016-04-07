@@ -13,30 +13,6 @@ public class MusicLibrary implements LibraryInterface {
 	public MusicLibrary(Database database) {
 		this.database = database;
 	}
-	
-	@Override
-	public boolean addSong(Song song, String playlistName) {
-		// Check if the playlist already has been created	
-		
-		// Add the song to the playlist in the database
-		// Playlist playlist = database.getPlaylist(playlistID);
-		// playlist.addSong(song);
-		
-		int playlistID;
-		Playlist playlist = database.getPlaylist(playlistName);
-		if(playlist == null) {
-			System.err.println("Playlist not found.");
-		}
-		
-		//playlistID = playlist.getID();
-		playlist.addSong(song);
-		
-		boolean putPlaylist = database.putPlaylist(playlist);
-		
-		// return database.putPlaylist(playlist);
-		
-		return putPlaylist;
-	}
 
 	@Override
 	public boolean createPlaylist(String playlistName) {
@@ -55,17 +31,35 @@ public class MusicLibrary implements LibraryInterface {
 		
 		return putPlaylist;
 	}
+	
+	@Override
+	public boolean addSong(Song song, String playlistName) {
+		Playlist playlist = database.getPlaylist(playlistName);
+		if(playlist == null) {
+			System.err.println("Playlist not found.");
+		}
+		
+		playlist.addSong(song);
+		
+		boolean putPlaylist = database.putPlaylist(playlist);
+		
+		return putPlaylist;
+	}
 
 	@Override
-	public boolean deleteSong(int songID, int playlistID) {
-		Playlist playlist = database.getPlaylist(playlistID);
-		
+	public boolean deleteSong(Song song, String playlistName) {
+		Playlist playlist = database.getPlaylist(playlistName);
+
 		if(playlist == null) {
 			System.err.println("Playlist not found!");
 			return false;
-		} else {
-			return playlist.deleteSong(songID);
 		}
+		
+		playlist.deleteSong(song.getID());
+		
+		boolean putPlaylist = database.putPlaylist(playlist);
+		
+		return putPlaylist;
 	}
 
 	@Override
@@ -94,10 +88,5 @@ public class MusicLibrary implements LibraryInterface {
 		}*/
 		
 		return playlist;
-	}
-
-	@Override
-	public Playlist getPlaylist(int playlistID) {
-		return database.getPlaylist(playlistID);
 	}
 }

@@ -23,7 +23,7 @@ public interface MusicControllerInterface {
 	
 	boolean				addSong(Song song, String playlistName);
 	
-	boolean				deleteSong(int songID, int playlistID);
+	boolean				deleteSong(Song song, String playlistName);
 	
-	ArrayList<Song>		listSongs(int playlistID);
+	ArrayList<Song>		listSongs(String playlistName);
 }

@@ -23,62 +23,11 @@ public class Database implements DatabaseInterface {
 	
 	@Override
 	public Song getSong(int songID, int playlistID) {
-//		try {
-//			statement = database.createStatement();
-//
-////			String query = "SELECT playlists.PlaylistName FROM PlaylistSongs"
-////					+ "";
-////			ResultSet results = statement.executeQuery("SELECT  FROM Playlist WHERE playlistID = " +playlistID +" AND songID = " +songID);
-////			
-////			// Create the song object by passing the song name
-////			// This will also use 
-////			Song song = new Song(results.getString(2), "ddew");
-////			return song;
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		return null;
 	}
 
 	@Override
 	public Artist getArtist(int artistID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Playlist getPlaylist(int playlistID) {
-//		try {
-//			statement = database.createStatement();
-//			
-//			// Check that the playlist exists
-//			ResultSet playlistInfo = statement.executeQuery("SELECT * FROM PlaylistInfo WHERE playlistID = " +playlistID);
-//
-//			// If the playlist does not exist, the query results will be empty
-//			if(!playlistInfo.next()) {
-//				return null;
-//			}
-//			
-//			// To create the playlist, we need the name, which we can grab 
-//			Playlist playlist = new Playlist(playlistInfo.getString(2));
-//
-//			// Get all the songs in the playlist
-//			// This will return a bunch of tuples that we can build into the list of songs in the playlist
-//			// results = database.query("SELECT * FROM Playlist WHERE playlistID = playlistID");
-//			
-//			// To create the list of songs...
-//			// Check the syntax necessary for this
-//			// for(tuple t : results) {
-//			//		playlist.add(new Song(t.songID, t.songName);
-//			// }
-//
-//			System.out.println("Playlist has been retrieved from the database.");
-//			return playlist;
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		return null;
 	}
 	
@@ -101,9 +50,7 @@ public class Database implements DatabaseInterface {
 			Playlist playlist = new Playlist(playlistID, playlistName);
 	
 			// Get all the songs in the playlist
-			// This will return a bunch of tuples that we can build into the list of songs in the playlist
-			// results = database.query("SELECT * FROM Playlist WHERE playlistID = playlistID");
-			
+			// This will return a bunch of tuples that we can build into the list of songs in the playlist			
 			String playlistSongsQuery =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Plays FROM PlaylistSongs playlistSongs "
 										//+"WHERE PlaylistID = " +playlistID +" "
 										+"INNER JOIN Songs songs ON (playlistSongs.SongID = songs.ID) "
@@ -112,9 +59,7 @@ public class Database implements DatabaseInterface {
 										+"	INNER JOIN Albums albums ON (songs.AlbumID = albums.ID)";
 			ResultSet results = statement.executeQuery(playlistSongsQuery);
 			
-			
-			// To create the list of songs...
-			// Check the syntax necessary for this
+			// Add each song to the playlist item
 			while(results.next()) {
 				playlist.addSong(new Song(results.getInt("ID"), results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
 			}
@@ -122,7 +67,6 @@ public class Database implements DatabaseInterface {
 			System.out.println("Playlist has been retrieved from the database.");
 			return playlist;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

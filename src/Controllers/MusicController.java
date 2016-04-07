@@ -22,6 +22,10 @@ public class MusicController implements MusicControllerInterface {
 		this.search = new Search(database);
 	}
 	
+	// -----------------------------------------------------------------------------------------
+	// Search Methods
+	// -----------------------------------------------------------------------------------------
+	
 	@Override
 	public ArrayList<Song> searchSong(String name) {
 		return search.searchSong(name);
@@ -67,17 +71,11 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public boolean deleteSong(int songID, int playlistID) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public ArrayList<Song> listSongs(int playlistID) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean deleteSong(Song song, String playlistName) {
+		return musicLibrary.deleteSong(song, playlistName);
 	}
 	
+	@Override
 	public ArrayList<Song> listSongs(String playlistName) {
 		return musicLibrary.listSongs(playlistName);
 	}

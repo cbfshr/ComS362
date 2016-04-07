@@ -20,6 +20,7 @@ public class Search implements SearchInterface {
 	public ArrayList<Album> searchAlbum(String albumName) {
 		ArrayList<Album> albums = database.getAllAlbums(albumName);
 		
+		System.out.println("Albums:");
 		for(Album album :albums) {
 			System.out.println(album.getName() +" - " +album.getArtist());
 		}
@@ -30,7 +31,8 @@ public class Search implements SearchInterface {
 	@Override
 	public ArrayList<Artist> searchArtist(String name) {
 		ArrayList<Artist> artists = database.getAllArtists(name);
-		
+
+		System.out.println("Artists:");
 		for(Artist artist : artists) {
 			System.out.println(artist.getArtistName());
 		}
@@ -42,6 +44,7 @@ public class Search implements SearchInterface {
 	public ArrayList<Song> searchSong(String name) {
 		ArrayList<Song> songs = database.getAllSongs(name);
 
+		System.out.println("Songs:");
 		for(Song s : songs) {
 			System.out.println(s.getName() +" - " +s.getArtist());
 		}

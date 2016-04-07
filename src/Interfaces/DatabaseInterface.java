@@ -11,7 +11,7 @@ public interface DatabaseInterface {
 	
     Artist				getArtist(int artistID);
     
-    Playlist			getPlaylist(int playlistID);
+//    Playlist			getPlaylist(int playlistID);
 
     Playlist			getPlaylist(String playlistName);
     

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import Controllers.MusicController;
 import Objects.*;
 
@@ -8,26 +6,20 @@ public class HelloWorld {
 		MusicController musicController = new MusicController();
 		
 		// Right now these do not check against the passed arguments!!!
-		System.out.println("Top Songs:");
 		musicController.searchTopSongs("");
 		
-		System.out.println("\nArtists");
 		musicController.searchArtist("");
 		
-		System.out.println("\nAlbums");
 		musicController.searchAlbum("");
 		
-		System.out.println("\nPlaylists");
 		musicController.searchPlaylist("");
 		
 		musicController.createPlaylist("Playlist1");
 
-		System.out.println("\nPlaylists");
 		musicController.searchPlaylist("");
 		
 		musicController.getPlaylist("Playlist1");
 		
-		System.out.println("\nSongs");
 		musicController.searchSong("");
 
 		System.out.println();
