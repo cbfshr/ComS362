@@ -21,7 +21,7 @@ public interface MusicControllerInterface {
 	
 	void				getPlaylist(String playlistName);
 	
-	boolean				addSong(int songID, int playlistID);
+	boolean				addSong(Song song, String playlistName);
 	
 	boolean				deleteSong(int songID, int playlistID);
 	

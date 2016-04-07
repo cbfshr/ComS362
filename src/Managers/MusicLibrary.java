@@ -15,15 +15,27 @@ public class MusicLibrary implements LibraryInterface {
 	}
 	
 	@Override
-	public boolean addSong(Song song, int playlistID) {
+	public boolean addSong(Song song, String playlistName) {
 		// Check if the playlist already has been created	
 		
 		// Add the song to the playlist in the database
 		// Playlist playlist = database.getPlaylist(playlistID);
 		// playlist.addSong(song);
+		
+		int playlistID;
+		Playlist playlist = database.getPlaylist(playlistName);
+		if(playlist == null) {
+			System.err.println("Playlist not found.");
+		}
+		
+		//playlistID = playlist.getID();
+		playlist.addSong(song);
+		
+		boolean putPlaylist = database.putPlaylist(playlist);
+		
 		// return database.putPlaylist(playlist);
 		
-		return false;
+		return putPlaylist;
 	}
 
 	@Override
@@ -57,24 +69,29 @@ public class MusicLibrary implements LibraryInterface {
 	}
 
 	@Override
-	public ArrayList<Song> listSongs(int playlistID) {
-		Playlist playlist = database.getPlaylist(playlistID);
+	public ArrayList<Song> listSongs(String playlistName) {
+		Playlist playlist = database.getPlaylist(playlistName);
 		
 		if(playlist == null) {
 			System.err.println("Playlist not found!");
 			return null;
-		} else {
-			return playlist.getAllSongs();
 		}
+		
+		System.out.println("Playlist: " +playlist.getName());
+		for(Song s : playlist.getAllSongs()) {
+			System.out.println(s.getName() +" - " +s.getArtist());
+		}
+		
+		return playlist.getAllSongs();
 	}
 
 	@Override
 	public Playlist getPlaylist(String playlistName) {
 		Playlist playlist = database.getPlaylist(playlistName);
 		
-		for(Song s : playlist.getAllSongs()) {
+		/*for(Song s : playlist.getAllSongs()) {
 			System.out.println(s.getName() +" - " +s.getArtist() +" (Playlist: " +playlist.getName() +")");
-		}
+		}*/
 		
 		return playlist;
 	}

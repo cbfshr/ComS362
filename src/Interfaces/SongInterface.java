@@ -1,6 +1,8 @@
 package Interfaces;
 
 public interface SongInterface {
+	int		getID();
+	
 	String	getName();
 	
 	String	getArtist();

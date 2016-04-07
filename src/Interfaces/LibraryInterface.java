@@ -7,11 +7,11 @@ import Objects.Playlist;
 import Objects.Song;
 
 public interface LibraryInterface {
-	boolean			addSong(Song song, int playlistID);
+	boolean			addSong(Song song, String playlistName);
 	
 	boolean			deleteSong(int songID, int playlistID);
 	
-	ArrayList<Song>	listSongs(int playlistID);
+	ArrayList<Song>	listSongs(String playlistName);
 	
 	boolean			createPlaylist(String playlistName);
 	

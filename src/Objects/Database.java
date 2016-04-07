@@ -116,7 +116,7 @@ public class Database implements DatabaseInterface {
 			// To create the list of songs...
 			// Check the syntax necessary for this
 			while(results.next()) {
-					playlist.addSong(new Song(results.getInt("ID"), results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
+				playlist.addSong(new Song(results.getInt("ID"), results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
 			}
 			
 			System.out.println("Playlist has been retrieved from the database.");
@@ -142,6 +142,23 @@ public class Database implements DatabaseInterface {
 				statement.executeUpdate(query);
 				
 				// Do stuff to update the songs
+				ArrayList<Song> songs = playlist.getAllSongs();
+				String songQuery;
+				ResultSet results;
+				for(Song song : songs) {
+					// Check if the song is already in the playlist
+					songQuery =  "SELECT * FROM PlaylistSongs "
+								+"WHERE SongID = " +song.getID();
+					
+					results = statement.executeQuery(songQuery);
+					
+					// If the results are empty, add the song to the playlist in the database
+					if(!results.next()) {
+						songQuery =  "INSERT INTO PlaylistSongs(SongID, PlaylistID) "
+									+"VALUES(" +song.getID() +", " +playlist.getID() +")";
+						statement.executeUpdate(songQuery);
+					}
+				}
 			} else {
 				// If it doesn't exist, INSERT
 				String query =   "INSERT INTO Playlists(PlaylistName) "
@@ -149,6 +166,13 @@ public class Database implements DatabaseInterface {
 				statement.executeUpdate(query);
 				
 				// Do stuff to insert the songs
+				ArrayList<Song> songs = playlist.getAllSongs();
+				String songQuery;
+				for(Song s : songs) {
+					songQuery =  "INSERT INTO PlaylistSongs(SongID, PlaylistID) "
+								+"VALUES(" +s.getID() +", " +playlist.getID() +")";
+					statement.executeUpdate(songQuery);
+				}
 			}
 			
 			return true;
@@ -210,7 +234,7 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			String query =   "SELECT songs.SongName, artists.ArtistName, songs.Plays "
+			String query =   "SELECT songs.ID, songs.SongName, artists.ArtistName, songs.Plays "
 							+"FROM Songs songs "
 							+"INNER JOIN Artists artists ON (songs.ArtistID = artists.ID)";
 //							+"WHERE songs.SongName = '" +name +"'";
@@ -219,7 +243,7 @@ public class Database implements DatabaseInterface {
 			
 			ArrayList<Song> songs = new ArrayList<Song>();
 			while(results.next()) {
-				songs.add(new Song(results.getString("songs.SongName"), results.getString("artists.ArtistName"), results.getInt("Plays")));
+				songs.add(new Song(results.getInt("songs.ID"), results.getString("songs.SongName"), results.getString("artists.ArtistName"), results.getInt("Plays")));
 			}
 			
 			return songs;
@@ -235,14 +259,14 @@ public class Database implements DatabaseInterface {
 		try {
 			statement = database.createStatement();
 			
-			String query =   "SELECT songs.SongName, artists.ArtistName, songs.Plays FROM Songs "
+			String query =   "SELECT songs.ID, songs.SongName, artists.ArtistName, songs.Plays FROM Songs "
 							+"INNER JOIN Artists artists ON (Songs.ArtistID = artists.ID) "
 							+"ORDER BY Plays DESC";
 			ResultSet results = statement.executeQuery(query);
 			
 			ArrayList<Song> songs = new ArrayList<Song>();
 			while(results.next()) {
-				songs.add(new Song(results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
+				songs.add(new Song(results.getInt("songs.ID"), results.getString("SongName"), results.getString("ArtistName"), results.getInt("Plays")));
 			}
 			
 			return songs;

@@ -29,6 +29,19 @@ public class HelloWorld {
 		
 		System.out.println("\nSongs");
 		musicController.searchSong("");
+
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		musicController.listSongs("Playlist1");
+		
+		Song song = musicController.searchSong("Victorious").get(0);
+		if(song != null) {
+			musicController.addSong(song, "Playlist1");
+		}
+
+		musicController.listSongs("Playlist1");
+		
 		
 		// Design flaw: When we are searching songs, should we be creating them with Artist and Album objects?
 		// If we do this, we would have to build an artist and album for every song retrieved from the database

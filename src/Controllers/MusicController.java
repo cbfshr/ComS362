@@ -62,9 +62,8 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public boolean addSong(int songID, int playlistID) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addSong(Song song, String playlistName) {
+		return musicLibrary.addSong(song, playlistName);
 	}
 
 	@Override
@@ -80,7 +79,6 @@ public class MusicController implements MusicControllerInterface {
 	}
 	
 	public ArrayList<Song> listSongs(String playlistName) {
-		
-		return null;
+		return musicLibrary.listSongs(playlistName);
 	}
 }
