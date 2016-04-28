@@ -12,6 +12,10 @@ public interface PlaylistInterface {
 	boolean			addSong(Song song);
 	
 	boolean			deleteSong(int songID);
-	
+
 	ArrayList<Song>	getAllSongs();
+	
+	boolean			isFeatured();
+	
+	int				getRating();
 }

@@ -21,14 +21,15 @@ public class MusicController implements MusicControllerInterface {
 		this.musicLibrary = new MusicLibrary(database);
 		this.search = new Search(database);
 	}
-	
-	// -----------------------------------------------------------------------------------------
-	// Search Methods
-	// -----------------------------------------------------------------------------------------
-	
+
 	@Override
 	public ArrayList<Song> searchSong(String name) {
-		return search.searchSong(name);
+		return search.searchSong(name, false);
+	}
+	
+	@Override
+	public ArrayList<Song> searchSongDetails(String name) {
+		return search.searchSong(name, true);
 	}
 
 	@Override
@@ -39,6 +40,11 @@ public class MusicController implements MusicControllerInterface {
 	@Override
 	public ArrayList<Album> searchAlbum(String albumName) {
 		return search.searchAlbum(albumName);
+	}
+
+	@Override
+	public ArrayList<String> searchGenre(String genreName) {
+		return search.searchGenre(genreName);
 	}
 
 	@Override
@@ -78,5 +84,45 @@ public class MusicController implements MusicControllerInterface {
 	@Override
 	public ArrayList<Song> listSongs(String playlistName) {
 		return musicLibrary.listSongs(playlistName);
+	}
+	
+	@Override
+	public ArrayList<Song> listSongsAlbum(String albumName) {
+		return musicLibrary.listSongsAlbum(albumName);
+	}
+
+	@Override
+	public boolean renamePlaylist(String playlistName, String newPlaylistName) {
+		return musicLibrary.renamePlaylist(playlistName, newPlaylistName);
+	}
+
+	@Override
+	public boolean deletePlaylist(String playlistName) {
+		return musicLibrary.deletePlaylist(playlistName);
+	}
+
+	@Override
+	public ArrayList<Playlist> getFeaturedPlaylists() {
+		return musicLibrary.getFeaturedPlaylists();
+	}
+
+	@Override
+	public boolean rateArtist(String artistName, int rating) {
+		return musicLibrary.rateArtist(artistName, rating);
+	}
+
+	@Override
+	public boolean rateAlbum(String albumName, int rating) {
+		return musicLibrary.rateAlbum(albumName, rating);
+	}
+
+	@Override
+	public boolean rateSong(String songName, int rating) {
+		return musicLibrary.rateSong(songName, rating);
+	}
+
+	@Override
+	public boolean ratePlaylist(String playlistName, int rating) {
+		return musicLibrary.ratePlaylist(playlistName, rating);
 	}
 }

@@ -1,23 +1,30 @@
 package Objects;
 
-import java.util.ArrayList;
+import Interfaces.ArtistInterface;
 
-public class Artist {
-//	int ID;
+public class Artist implements ArtistInterface {
+	int ID;
 	private String artistName;
-//	ArrayList<Album> albums;
-//	ArrayList<Song> tracks;
-//	ArrayList<Song> topTracks;
+	private int rating;
 	
-	public Artist(String artistName, ArrayList<Album> albums, ArrayList<Song> tracks, ArrayList<Song> topTracks) {
-//		this.ID = ID;
+	public Artist(int ID, String artistName, int rating) {
+		this.ID = ID;
 		this.artistName = artistName;
-//		this.albums = albums;
-//		this.tracks = new ArrayList<Song>(tracks);
-//		this.topTracks = topTracks;
+		this.rating = rating;
 	}
-	
+
+	@Override
+	public int getArtistID() {
+		return this.ID;
+	}
+
+	@Override
 	public String getArtistName() {
 		return this.artistName;
+	}
+
+	@Override
+	public int getRating() {
+		return rating;
 	}
 }

@@ -8,10 +8,12 @@ import Objects.Song;
 
 public interface SearchInterface {
 	ArrayList<Album>	searchAlbum(String name);
-	
+
 	ArrayList<Artist>	searchArtist(String name);
-	
-	ArrayList<Song>		searchSong(String name);
+
+	ArrayList<String>	searchGenre(String name);
+
+	ArrayList<Song>		searchSong(String name, boolean showDetails);
 	
 	ArrayList<Song>		searchTopSongs(String artistName);
 	

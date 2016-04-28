@@ -8,6 +8,8 @@ public class Playlist implements PlaylistInterface {
 	private int ID;
 	private String playlistName;
 	private ArrayList<Song> songs;
+	private boolean featured;
+	private int rating;
 	
 	public Playlist(String playlistName) {
 		this.playlistName = playlistName;
@@ -15,9 +17,11 @@ public class Playlist implements PlaylistInterface {
 		songs = new ArrayList<Song>();
 	}
 	
-	public Playlist(int playlistID, String playlistName) {
+	public Playlist(int playlistID, String playlistName, int featured, int rating) {
 		this.ID = playlistID;
 		this.playlistName = playlistName;
+		this.featured = (featured == 1);
+		this.rating = rating;
 		
 		songs = new ArrayList<Song>();
 	}
@@ -45,5 +49,15 @@ public class Playlist implements PlaylistInterface {
 	@Override
 	public ArrayList<Song> getAllSongs() {
 		return songs;
+	}
+
+	@Override
+	public boolean isFeatured() {
+		return featured;
+	}
+
+	@Override
+	public int getRating() {
+		return rating;
 	}
 }

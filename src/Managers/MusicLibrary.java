@@ -3,6 +3,7 @@ package Managers;
 import java.util.ArrayList;
 
 import Interfaces.LibraryInterface;
+import Objects.Album;
 import Objects.Database;
 import Objects.Playlist;
 import Objects.Song;
@@ -78,6 +79,32 @@ public class MusicLibrary implements LibraryInterface {
 		
 		return playlist.getAllSongs();
 	}
+	
+	@Override
+	public ArrayList<Song> listSongsAlbum(String albumName) {
+		ArrayList<Album> albums = database.getAllAlbums(albumName);
+	
+		if(albums == null || albums.isEmpty()) {
+			System.err.println("Album not found!");
+			return null;
+		}
+//		Album album = albums.get(0);
+//		
+//		if(album == null) {
+//			System.err.println("Album not found!");
+//			return null;
+//		}
+		
+		for(Album album : albums) {
+			System.out.println("Album: " +album.getName());
+			for(Song s : album.getSongs()) {
+				System.out.println(s.getName() +" - " +s.getArtist());
+			}
+		}
+		
+		// TODO:
+		return null;
+	}
 
 	@Override
 	public Playlist getPlaylist(String playlistName) {
@@ -88,5 +115,47 @@ public class MusicLibrary implements LibraryInterface {
 		}*/
 		
 		return playlist;
+	}
+
+	@Override
+	public boolean renamePlaylist(String playlistName, String newPlaylistName) {
+		return database.renamePlaylist(playlistName, newPlaylistName);
+	}
+
+	@Override
+	public boolean deletePlaylist(String playlistName) {
+		return database.deletePlaylist(playlistName);
+	}
+
+	@Override
+	public ArrayList<Playlist> getFeaturedPlaylists() {
+		ArrayList<Playlist> featuredPlaylists = database.getFeaturedPlaylists();
+		
+		System.out.println("Feature Playlists:");
+		for(Playlist fp : featuredPlaylists) {
+			System.out.println(fp.getName());
+		}
+		
+		return featuredPlaylists;
+	}
+
+	@Override
+	public boolean rateArtist(String artistName, int rating) {
+		return database.rateArtist(artistName, rating);
+	}
+
+	@Override
+	public boolean rateAlbum(String albumName, int rating) {
+		return database.rateAlbum(albumName, rating);
+	}
+
+	@Override
+	public boolean rateSong(String songName, int rating) {
+		return database.rateSong(songName, rating);
+	}
+
+	@Override
+	public boolean ratePlaylist(String playlistName, int rating) {
+		return database.ratePlaylist(playlistName, rating);
 	}
 }

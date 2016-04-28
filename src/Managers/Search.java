@@ -22,7 +22,7 @@ public class Search implements SearchInterface {
 		
 		System.out.println("Albums:");
 		for(Album album :albums) {
-			System.out.println(album.getName() +" - " +album.getArtist());
+			System.out.println(album.getName() +" - " +album.getArtist() +" (Rating: " +album.getRating() +")");
 		}
 		
 		return albums;
@@ -34,19 +34,30 @@ public class Search implements SearchInterface {
 
 		System.out.println("Artists:");
 		for(Artist artist : artists) {
-			System.out.println(artist.getArtistName());
+			System.out.println(artist.getArtistName() +" (Rating: " +artist.getRating() +")");
 		}
 		
 		return artists;
 	}
 	
 	@Override
-	public ArrayList<Song> searchSong(String name) {
+	public ArrayList<Song> searchSong(String name, boolean showDetails) {
 		ArrayList<Song> songs = database.getAllSongs(name);
 
-		System.out.println("Songs:");
+		// TODO:
+		System.out.println("Search song results:");
+		if(!showDetails) {
+			System.out.println(String.format("%-25s%-20s", "Song", "Artist"));
+		} else {
+			System.out.println(String.format("%-25s%-20s%-25s%-15s%-10s%-15s%-15s%-20s%-8s%-6s", "Song", "Artist", "Album", "Duration", "Track #", "Sample Rate", "Content Type", "Genre", "Plays", "Rating"));
+		}
+		
 		for(Song s : songs) {
-			System.out.println(s.getName() +" - " +s.getArtist());
+			if(!showDetails) {
+				System.out.println(String.format("%-25s%-20s", s.getName(), s.getArtist()));
+			} else {
+				System.out.println(String.format("%-25s%-20s%-25s%-15s%-10s%-15s%-15s%-20s%-5d%-6s", s.getName(), s.getArtist(), s.getAlbum(), s.getDuration(), s.getTrackNumber(), s.getSampleRate(), s.getContentType(), s.getGenre(), s.getPlays(), s.getRating()));
+			}
 		}
 		
 		return songs;
@@ -70,9 +81,25 @@ public class Search implements SearchInterface {
 		ArrayList<Playlist> playlists = database.getAllPlaylists(name);
 		
 		for(Playlist playlist : playlists) {
-			System.out.println(playlist.getName());
+			if(playlist.isFeatured()) {
+				System.out.println(playlist.getName() +" (*Featured Playlist)" +"(Rating: " +playlist.getRating() +")");
+			} else {
+				System.out.println(playlist.getName());
+			}
 		}
 		
 		return playlists;
+	}
+
+	@Override
+	public ArrayList<String> searchGenre(String name) {
+		ArrayList<String> genres = database.getAllGenres(name);
+
+		System.out.println("Genres:");
+		for(String s : genres) {
+			System.out.println(s);
+		}
+		
+		return genres;
 	}
 }

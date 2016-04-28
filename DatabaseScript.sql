@@ -25,7 +25,8 @@ DROP TABLE Artists;
 CREATE TABLE Artists (
 	ID int NOT NULL AUTO_INCREMENT,
 	ArtistName varchar(50),
-	PRIMARY KEY (ID)
+	Rating int,
+	PRIMARY KEY (ID, ArtistName)
 );
 
 -- Create a table to hold all the Album names
@@ -33,8 +34,17 @@ CREATE TABLE Albums (
 	ID int NOT NULL AUTO_INCREMENT,
 	AlbumName varchar(50) NOT NULL,
 	ArtistID int,
-	PRIMARY KEY (ID),
+	Rating int,
+	PRIMARY KEY (ID, AlbumName),
 	FOREIGN KEY (ArtistID) REFERENCES Artists(ID) ON DELETE CASCADE
+);
+
+-- Create a table to hold all the Genre names
+CREATE TABLE Genres (
+	ID int NOT NULL AUTO_INCREMENT,
+	GenreName varchar(50) NOT NULL,
+	Rating int,
+	PRIMARY KEY (ID, GenreName)
 );
 
 -- Create Table Songs
@@ -43,16 +53,25 @@ CREATE TABLE Songs (
 	SongName varchar(50) NOT NULL,
 	ArtistID int,
 	AlbumID int,
+	GenreID int,
+	Duration varchar(30),
+	TrackNumber varchar(30),
+	SampleRate varchar(30),
+	ContentType varchar(30),
 	Plays int,
+	Rating int,
 	PRIMARY KEY (ID),
 	FOREIGN KEY (ArtistID) REFERENCES Artists(ID) ON DELETE CASCADE,
-	FOREIGN KEY (AlbumID) REFERENCES Albums(ID) ON DELETE CASCADE
+	FOREIGN KEY (AlbumID) REFERENCES Albums(ID) ON DELETE CASCADE,
+	FOREIGN KEY (GenreID) REFERENCES Genres(ID) ON DELETE CASCADE
 );
 
 -- Create a table to hold all the Playlist names
 CREATE TABLE Playlists (
 	ID int NOT NULL AUTO_INCREMENT,
 	PlaylistName varchar(30),
+	Featured int,
+	Rating int,
 	PRIMARY KEY (ID)
 );
 
@@ -85,13 +104,13 @@ INSERT INTO Albums(AlbumName, ArtistID) VALUES('The Razor''s Edge', 4);
 INSERT INTO Albums(AlbumName, ArtistID) VALUES('Death of a Bachelor', 2);
 
 -- Insert Song Names in Songs
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Boulevard of Broken Dreams', 1, 1, 123);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Beware the Dog', 3, 2, 253);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('American Idiot', 1, 1, 401);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Greek Tragedy', 5, 3, 79);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Thunderstruck', 4, 5, 169);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Hells Bells', 4, 4, 20);
-INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Victorious', 2, 6, 64);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Boulevard of Broken Dreams', 1, 1, 123);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Beware the Dog', 3, 2, 253);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('American Idiot', 1, 1, 401);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Greek Tragedy', 5, 3, 79);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Thunderstruck', 4, 5, 169);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Hells Bells', 4, 4, 20);
+-- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Victorious', 2, 6, 64);
 
 -- SELECT * FROM Artists WHERE ArtistName = "Green Day";
 -- DELETE FROM Artists WHERE ArtistName = "Green Day";
