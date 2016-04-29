@@ -249,10 +249,12 @@ public class CommandLineInterface {
 				break;
 		}
 	}
+	
 	private void newRelease(ArrayList<String> newRelease)
 	{
-		
+		this.musicController.getNewReleases();
 	}
+	
 	private void categories(ArrayList<String> categories)
 	{
 		this.musicController.searchGenre("");

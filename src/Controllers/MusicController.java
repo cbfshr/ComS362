@@ -159,4 +159,9 @@ public class MusicController implements MusicControllerInterface {
 	public ArrayList<Artist> getSimilarArtists(String artistName) {
 		return search.getSimilarArtists(artistName);
 	}
+
+	@Override
+	public ArrayList<Album> getNewReleases() {
+		return search.getNewReleases();
+	}
 }

@@ -51,4 +51,6 @@ public interface DatabaseInterface {
 	boolean				ratePlaylist(String playlistName, int rating);
 	
 	ArrayList<Artist>	getSimilarArtists(String artistName);
+	
+	ArrayList<Album>	getNewReleases();
 }

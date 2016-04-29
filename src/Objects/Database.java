@@ -36,20 +36,6 @@ public class Database implements DatabaseInterface {
 		database = databaseConnection.ConnectToDatabase();
 	}
 	
-//	public void listFilesForFolder(final File folder) {
-//		for(final File fileEntry : folder.listFiles()) {
-//			if(fileEntry.isDirectory()) {
-//				listFilesForFolder(fileEntry);
-//			} else {
-//				String fileName = fileEntry.getName();
-//				System.out.println(fileName);
-//				if(fileName.contains(".mp3")) {
-//					putSongMetadata(fileEntry.getAbsolutePath());
-//				}
-//			}
-//		}
-//	}
-	
 	public void putSongMetadata(String filePath) {
 		try {
 			InputStream input = new FileInputStream(new File(filePath));
@@ -922,6 +908,80 @@ public class Database implements DatabaseInterface {
 			e.printStackTrace();
 		}
 	
+		return null;
+	}
+
+	@Override
+	public ArrayList<Album> getNewReleases() {
+		try {
+			statement = database.createStatement();
+			String query;
+			
+			query =  "SELECT albums.ID, albums.AlbumName, artists.ArtistName, albums.Rating, albums.ReleaseDate "
+					+"FROM Albums albums "
+					+"INNER JOIN Artists artists ON (albums.ArtistID = artists.ID) "
+					+"WHERE albums.ReleaseDate != 'null' "
+					+"AND albums.ReleaseDate IS NOT NULL "
+					+"AND albums.ReleaseDate != '' "
+					+"ORDER BY albums.ReleaseDate DESC";
+			
+			ResultSet results = statement.executeQuery(query);
+
+			Statement songsStatement = database.createStatement();
+			ArrayList<Album> albums = new ArrayList<Album>();
+			while(results.next()) {
+				// Get number of songs in the album:
+				int numberOfSongs = 0;
+				query =  "SELECT COUNT(*) FROM Songs "
+						+"WHERE AlbumID = " +results.getInt("ID");
+				ResultSet songResults = songsStatement.executeQuery(query);
+				
+				if(songResults.first()) {
+					numberOfSongs = songResults.getInt("COUNT(*)");
+				}
+				
+				Album album = new Album(results.getInt("ID"), results.getString("AlbumName"), results.getString("ArtistName"), results.getInt("Rating"), results.getString("ReleaseDate"), numberOfSongs);
+				albums.add(album);
+			}
+			
+			for(Album album : albums) {
+				// Get all the songs in the album
+				// This will return a bunch of tuples that we can build into the list of songs in the playlist			
+				String playlistSongsQuery =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, genres.GenreName, songs.Plays, songs.Rating "
+											+"FROM Songs songs "
+											//+"INNER JOIN Playlists playlists ON (playlistSongs.PlaylistID = playlists.ID) "
+											+"INNER JOIN Artists artists ON (songs.ArtistID = artists.ID) "
+											+"INNER JOIN Albums albums ON (songs.AlbumID = albums.ID) "
+											+"INNER JOIN Genres genres ON (songs.GenreID = genres.ID) "
+											+"WHERE AlbumID = " +album.getID();
+				ResultSet songResults = statement.executeQuery(playlistSongsQuery);
+				
+				// Add each song to the playlist item
+				while(songResults.next()) {
+//					System.err.println(songResults.getString("SongName"));
+					album.addSong(
+						new Song(
+							songResults.getInt("songs.ID"),
+							songResults.getString("songs.SongName"),
+							songResults.getString("artists.ArtistName"),
+							songResults.getString("albums.AlbumName"),
+							songResults.getString("songs.Duration"),
+							songResults.getString("songs.TrackNumber"),
+							songResults.getString("songs.SampleRate"),
+							songResults.getString("songs.ContentType"),
+							songResults.getString("genres.GenreName"),
+							songResults.getInt("songs.Plays"),
+							songResults.getInt("songs.Rating")
+						)
+					);
+				}
+			}
+			
+			return albums;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 }

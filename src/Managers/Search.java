@@ -95,11 +95,11 @@ public class Search implements SearchInterface {
 		for(Song s : songs) {
 			System.out.println(i +".) " +s.getName() +" - " +s.getArtist() +" (Plays: " +s.getPlays() +")");
 			
-			if(i == 5) {
+			i++;
+			
+			if(i > 5) {
 				break;
 			}
-			
-			i++;
 		}
 		
 		return songs;
@@ -142,5 +142,25 @@ public class Search implements SearchInterface {
 		}
 		
 		return similarArtists;
+	}
+
+	@Override
+	public ArrayList<Album> getNewReleases() {
+		ArrayList<Album> newReleases = database.getNewReleases();
+		
+		int i = 1;
+		
+		System.out.println("New Releases");
+		for(Album newRelease : newReleases) {
+			System.out.println(newRelease.getName() +" - " +newRelease.getArtist() +" (" +newRelease.getReleaseDate() +")");
+			
+			i++;
+
+			if(i > 10) {
+				break;
+			}
+		}
+		
+		return newReleases;
 	}
 }
