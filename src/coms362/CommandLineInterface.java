@@ -29,19 +29,19 @@ public class CommandLineInterface {
 			
 			switch(commands.get(0)){
 				case "search":
-					search(commands);
+					search(commands,scanner);
 					break;
 				case "artist":
-					artist(commands);
+					artist(commands,scanner);
 					break;
 				case "album":
-					album(commands);
+					album(commands,scanner);
 					break;
 				case "song":
-					song(commands);
+					song(commands,scanner);
 					break;
 				case "playlist":
-					playlist(commands);
+					playlist(commands,scanner);
 					break;
 				case "new":
 					newRelease(commands);
@@ -114,60 +114,32 @@ public class CommandLineInterface {
 			e.printStackTrace();
 		}
 	}
-	private void search(ArrayList<String> search)
+	private void search(ArrayList<String> search,Scanner scanner)
 	{
 		switch(search.get(1))
 		{
 			case "artist":
-				if(search.size() < 3 )
-				{
-					this.musicController.searchArtist("");
-				}
-				else
-				{
-					this.musicController.searchArtist(search.get(2));
-				}
+				this.musicController.searchArtist(scanner.nextLine().trim());
 				break;
 			case "album":
-				if(search.size() < 3 )
-				{
-					this.musicController.searchAlbum("");
-				}
-				else
-				{
-					this.musicController.searchAlbum(search.get(2));
-				}
+				this.musicController.searchAlbum(scanner.nextLine().trim());
 				break;
 			case "song":
-				if(search.size() < 3 )
-				{
-					this.musicController.searchSong("");
-				}
-				else
-				{
-					this.musicController.searchSong(search.get(2));
-				}
+				this.musicController.searchSong(scanner.nextLine().trim());
 				break;
 			case "playlist":
-				if(search.size() < 3 )
-				{
-					this.musicController.searchPlaylist("");
-				}
-				else
-				{
-					this.musicController.searchPlaylist(search.get(2));
-				}
+				this.musicController.searchPlaylist(scanner.nextLine().trim());
 				break;
 			default: 
 				System.err.println("unknown command");
 		}
 	}
-	private void artist(ArrayList<String> artist)
+	private void artist(ArrayList<String> artist,Scanner scanner)
 	{
 		switch(artist.get(1))
 		{
 			case "top":
-				this.musicController.searchTopSongs(artist.get(2));
+				this.musicController.searchTopSongs(scanner.nextLine().trim());
 				break;
 			case "data":
 				//this.musicController.searchArtist(name)
@@ -175,11 +147,11 @@ public class CommandLineInterface {
 			case "similar":
 				break;
 			case "rate":
-				this.musicController.rateArtist(artist.get(2), Integer.parseInt(artist.get(3)));
+				this.musicController.rateArtist(scanner.nextLine().trim(), Integer.parseInt(scanner.nextLine().trim()));
 				break;
 		}
 	}
-	private void album(ArrayList<String> album)
+	private void album(ArrayList<String> album,Scanner scanner)
 	{
 		switch(album.get(1))
 		{
@@ -188,14 +160,14 @@ public class CommandLineInterface {
 			case "compare":
 				break;
 			case "rate":
-				this.musicController.rateAlbum(album.get(2),Integer.parseInt(album.get(3)));
+				this.musicController.rateAlbum(scanner.nextLine().trim(),Integer.parseInt(scanner.nextLine().trim()));
 				break;
 			case "list":
-				this.musicController.listSongsAlbum(album.get(2));
+				this.musicController.listSongsAlbum(scanner.nextLine().trim());
 				break;
 		}
 	}
-	private void song(ArrayList<String> song)
+	private void song(ArrayList<String> song,Scanner scanner)
 	{
 		switch(song.get(1))
 		{
@@ -204,19 +176,19 @@ public class CommandLineInterface {
 			case "compare":
 				break;
 			case "rate":
-				this.musicController.rateSong(song.get(2), Integer.parseInt(song.get(3)));
+				this.musicController.rateSong(scanner.nextLine().trim(), Integer.parseInt(scanner.nextLine().trim()));
 				break;
 		}
 	}
-	private void playlist(ArrayList<String> playlist)
+	private void playlist(ArrayList<String> playlist,Scanner scanner)
 	{
 		switch(playlist.get(1))
 		{
 			case "create":
-				this.musicController.createPlaylist(playlist.get(2));
+				this.musicController.createPlaylist(scanner.nextLine().trim());
 				break;
 			case "add":
-				switch(playlist.get(2))
+				switch(scanner.nextLine().trim())
 				{
 					case "song":
 						//this.playlist(playlist.get(4),playlist.get(3));
@@ -231,19 +203,19 @@ public class CommandLineInterface {
 				//this.musicController.deleteSong(playlist.get(2),playlist.get(3));
 				break;
 			case "list":
-				this.musicController.listSongs(playlist.get(2));
+				this.musicController.listSongs(scanner.nextLine().trim());
 				break;
 			case "featured":
 				this.musicController.getFeaturedPlaylists();
 				break;
 			case "rename":
-				this.musicController.renamePlaylist(playlist.get(2), playlist.get(3));
+				this.musicController.renamePlaylist(scanner.nextLine().trim(), scanner.nextLine().trim());
 				break;
 			case "delete":
-				this.musicController.deletePlaylist(playlist.get(2));
+				this.musicController.deletePlaylist(scanner.nextLine().trim());
 				break;
 			case "rate":
-				this.musicController.ratePlaylist(playlist.get(2), Integer.parseInt(playlist.get(3)));
+				this.musicController.ratePlaylist(scanner.nextLine().trim(), Integer.parseInt(scanner.nextLine().trim()));
 				break;
 		}
 	}
