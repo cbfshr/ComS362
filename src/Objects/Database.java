@@ -420,10 +420,15 @@ public class Database implements DatabaseInterface {
 	public ArrayList<Artist> getAllArtists(String artistName) {
 		try {
 			statement = database.createStatement();
-			
-			String query =   "SELECT * FROM Artists artists "
-							+"INNER JOIN Genres genres ON (artists.GenreID = genres.ID) "
-							+"WHERE ArtistName = '" +artistName +"' ";
+			String query;
+			if(!artistName.isEmpty()) {
+				query =   "SELECT * FROM Artists artists "
+								+"INNER JOIN Genres genres ON (artists.GenreID = genres.ID) "
+								+"WHERE ArtistName = '" +artistName +"' ";
+			} else {
+				query =   "SELECT * FROM Artists artists "
+								+"INNER JOIN Genres genres ON (artists.GenreID = genres.ID) ";
+			}
 			ResultSet results = statement.executeQuery(query);
 			
 			if(!results.first()) {

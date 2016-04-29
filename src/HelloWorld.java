@@ -1,9 +1,10 @@
 import Controllers.MusicController;
 import Objects.*;
+import coms362.CommandLineInterface;
 
 public class HelloWorld {
 	public static void main(String[] args) {
-		MusicController musicController = new MusicController();
+//		MusicController musicController = new MusicController();
 		
 		// Right now these do not check against the passed arguments!!!
 		/*musicController.searchTopSongs("");
@@ -99,10 +100,15 @@ public class HelloWorld {
 		
 //		musicController.populateMusicDatabase("C:/Users/Cal/Music/iTunes/iTunes Media/Music/Imagine Dragons");
 
-		musicController.searchAlbum("Hell And Silence");
-		musicController.searchAlbumDetails("Hell And Silence");
+//		musicController.searchAlbum("Hell And Silence");
+//		musicController.searchAlbumDetails("Hell And Silence");
+//		
+//		musicController.searchArtist("Imagine Dragons");
+//		musicController.searchArtistDetails("Imagine Dragons");
 		
-		musicController.searchArtist("Imagine Dragons");
-		musicController.searchArtistDetails("Imagine Dragons");
+		
+		CommandLineInterface commandLineInterface = new CommandLineInterface();
+		
+		commandLineInterface.getInput();
 	}
 }

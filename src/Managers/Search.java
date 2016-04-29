@@ -40,6 +40,10 @@ public class Search implements SearchInterface {
 	public ArrayList<Artist> searchArtist(String name, boolean showDetails) {
 		ArrayList<Artist> artists = database.getAllArtists(name);
 
+		if(artists == null) {
+			return null;
+		}
+		
 		if(!showDetails) {
 			System.out.println("Artists:");
 		} else {

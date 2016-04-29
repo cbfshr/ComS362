@@ -13,7 +13,7 @@ public class CommandLineInterface {
 
 	public CommandLineInterface()
 	{
-		this.musicController = null; //new MusicController();
+		this.musicController = new MusicController();
 	}
 	
 	public void getInput()
@@ -228,7 +228,7 @@ public class CommandLineInterface {
 				}
 				break;
 			case "remove":
-				//this.musicController.deleteSong(playlist.get(3),playlist.get(4));
+				//this.musicController.deleteSong(playlist.get(2),playlist.get(3));
 				break;
 			case "list":
 				this.musicController.listSongs(playlist.get(2));
