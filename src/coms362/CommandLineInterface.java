@@ -20,11 +20,11 @@ public class CommandLineInterface {
 	{
 		String input = null;
 		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("\nEnter a command (type 'help' to view commands): ");
 		input = scanner.nextLine();
 		while(!input.toLowerCase().equals("quit"))
 		{
-			
-			
 			ArrayList<String> commands = parseInput(input.trim());
 			
 			switch(commands.get(0)){
@@ -49,21 +49,25 @@ public class CommandLineInterface {
 				case "categories":
 					categories(commands);
 					break;
+				case "populate":
+					System.out.println("Type the path to the music library:");
+					musicController.populateMusicDatabase(scanner.nextLine().trim());
+					break;
 				case "quit":
 					scanner.close();
 					return;
+				case "help":
+					try {
+						showCommands();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					break;
 				default:
 					System.err.println("Unknown Command");
-				try {
-					showCommands();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-					
 			}
-			
+
+			System.out.print("\nEnter a command (type 'help' to view commands): ");
 			input = scanner.nextLine();
 		}
 		
@@ -114,6 +118,7 @@ public class CommandLineInterface {
 			e.printStackTrace();
 		}
 	}
+	
 	private void search(ArrayList<String> search,Scanner scanner)
 	{
 		switch(search.get(1))
@@ -134,6 +139,7 @@ public class CommandLineInterface {
 				System.err.println("unknown command");
 		}
 	}
+	
 	private void artist(ArrayList<String> artist,Scanner scanner)
 	{
 		switch(artist.get(1))
@@ -142,22 +148,31 @@ public class CommandLineInterface {
 				this.musicController.searchTopSongs(scanner.nextLine().trim());
 				break;
 			case "data":
-				//this.musicController.searchArtist(name)
+				this.musicController.searchArtistDetails(scanner.nextLine().trim());
 				break;
 			case "similar":
+				this.musicController.getSimilarArtists(scanner.nextLine().trim());
 				break;
 			case "rate":
 				this.musicController.rateArtist(scanner.nextLine().trim(), Integer.parseInt(scanner.nextLine().trim()));
 				break;
 		}
 	}
+	
 	private void album(ArrayList<String> album,Scanner scanner)
 	{
 		switch(album.get(1))
 		{
 			case "data":
+				this.musicController.searchAlbumDetails(scanner.nextLine().trim());
 				break;
 			case "compare":
+				System.out.println("Enter two album names:");
+				String album1 = scanner.nextLine().trim();
+				String album2 = scanner.nextLine().trim();
+				System.out.println("Printing information about the two songs:");
+				this.musicController.searchAlbumDetails(album1);
+				this.musicController.searchAlbumDetails(album2);
 				break;
 			case "rate":
 				this.musicController.rateAlbum(scanner.nextLine().trim(),Integer.parseInt(scanner.nextLine().trim()));
@@ -167,19 +182,28 @@ public class CommandLineInterface {
 				break;
 		}
 	}
+	
 	private void song(ArrayList<String> song,Scanner scanner)
 	{
 		switch(song.get(1))
 		{
 			case "data":
+				this.musicController.searchSongDetails(scanner.nextLine().trim());
 				break;
 			case "compare":
+				System.out.println("Enter two song names:");
+				String song1 = scanner.nextLine().trim();
+				String song2 = scanner.nextLine().trim();
+				System.out.println("Printing information about the two songs:");
+				this.musicController.searchSongDetails(song1);
+				this.musicController.searchSongDetails(song2);
 				break;
 			case "rate":
 				this.musicController.rateSong(scanner.nextLine().trim(), Integer.parseInt(scanner.nextLine().trim()));
 				break;
 		}
 	}
+	
 	private void playlist(ArrayList<String> playlist,Scanner scanner)
 	{
 		switch(playlist.get(1))
@@ -191,16 +215,22 @@ public class CommandLineInterface {
 				switch(scanner.nextLine().trim())
 				{
 					case "song":
-						//this.playlist(playlist.get(4),playlist.get(3));
+						System.out.println("Enter a song name then the playlist.");
+						this.musicController.addSongToPlaylist(scanner.nextLine().trim(), scanner.nextLine().trim());
 						break;
 					case "artist":
+						System.out.println("Enter an artist name then the playlist.");
+						this.musicController.addAllArtistSongsToPlaylist(scanner.nextLine().trim(), scanner.nextLine().trim());
 						break;
 					case "album":
+						System.out.println("Enter an ablum name then the playlist.");
+						this.musicController.addAllAlbumSongsToPlaylist(scanner.nextLine().trim(), scanner.nextLine().trim());
 						break;
 				}
 				break;
 			case "remove":
-				//this.musicController.deleteSong(playlist.get(2),playlist.get(3));
+				System.out.println("Enter the song name to be removed followed by the playlist name.");
+				this.musicController.deleteSongFromPlaylist(scanner.nextLine().trim(), scanner.nextLine().trim());
 				break;
 			case "list":
 				this.musicController.listSongs(scanner.nextLine().trim());

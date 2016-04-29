@@ -15,8 +15,6 @@ public interface DatabaseInterface {
     Artist				getArtist(String artistName);
     
     Album				getAlbum(String albumName);
-    
-//	Playlist			getPlaylist(int playlistID);
 
     Playlist			getPlaylist(String playlistName);
     
@@ -51,4 +49,6 @@ public interface DatabaseInterface {
 	boolean				rateSong(String songName, int rating);
 
 	boolean				ratePlaylist(String playlistName, int rating);
+	
+	ArrayList<Artist>	getSimilarArtists(String artistName);
 }

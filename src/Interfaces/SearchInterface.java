@@ -18,4 +18,6 @@ public interface SearchInterface {
 	ArrayList<Song>		searchTopSongs(String artistName);
 	
 	ArrayList<Playlist>	searchPlaylist(String name);
+	
+	ArrayList<Artist>	getSimilarArtists(String artistName);
 }

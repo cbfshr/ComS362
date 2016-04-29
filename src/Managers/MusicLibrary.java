@@ -98,31 +98,20 @@ public class MusicLibrary implements LibraryInterface {
 			System.err.println("Album not found!");
 			return null;
 		}
-//		Album album = albums.get(0);
-//		
-//		if(album == null) {
-//			System.err.println("Album not found!");
-//			return null;
-//		}
 		
 		for(Album album : albums) {
-			System.out.println("Album: " +album.getName());
+			System.out.println("Album: " +album.getName()+" - " +album.getArtist());
 			for(Song s : album.getSongs()) {
-				System.out.println(s.getName() +" - " +s.getArtist());
+				System.out.println(s.getName());
 			}
 		}
 		
-		// TODO:
 		return null;
 	}
 
 	@Override
 	public Playlist getPlaylist(String playlistName) {
 		Playlist playlist = database.getPlaylist(playlistName);
-		
-		/*for(Song s : playlist.getAllSongs()) {
-			System.out.println(s.getName() +" - " +s.getArtist() +" (Playlist: " +playlist.getName() +")");
-		}*/
 		
 		return playlist;
 	}
@@ -167,5 +156,28 @@ public class MusicLibrary implements LibraryInterface {
 	@Override
 	public boolean ratePlaylist(String playlistName, int rating) {
 		return database.ratePlaylist(playlistName, rating);
+	}
+
+	@Override
+	public boolean addAllAlbumSongsToPlaylist(String albumName, String playlistName) {
+		Album album = database.getAlbum(albumName);
+		
+		if(album == null) {
+			return false;
+		}
+		
+		ArrayList<Song> albumSongs = album.getSongs();
+		
+		for(Song s : albumSongs) {
+			database.addSongToPlaylist(s.getName(), playlistName);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean addAllArtistSongsToPlaylist(String artistName, String playlistName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

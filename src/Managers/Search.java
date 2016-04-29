@@ -64,8 +64,6 @@ public class Search implements SearchInterface {
 	public ArrayList<Song> searchSong(String name, boolean showDetails) {
 		ArrayList<Song> songs = database.getAllSongs(name);
 
-		// TODO:
-		System.out.println("Search song results:");
 		if(!showDetails) {
 			System.out.println(String.format("%-25s%-20s", "Song", "Artist"));
 		} else {
@@ -86,10 +84,21 @@ public class Search implements SearchInterface {
 	@Override
 	public ArrayList<Song> searchTopSongs(String artistName) {
 		ArrayList<Song> songs = database.getTopSongs(artistName);
+		
+		if(songs == null) {
+			System.err.println("Artist does not exist or has no songs.");
+			return null;
+		}
+		
 		int i = 1;
 		
 		for(Song s : songs) {
 			System.out.println(i +".) " +s.getName() +" - " +s.getArtist() +" (Plays: " +s.getPlays() +")");
+			
+			if(i == 5) {
+				break;
+			}
+			
 			i++;
 		}
 		
@@ -121,5 +130,17 @@ public class Search implements SearchInterface {
 		}
 		
 		return genres;
+	}
+
+	@Override
+	public ArrayList<Artist> getSimilarArtists(String artistName) {
+		ArrayList<Artist> similarArtists = database.getSimilarArtists(artistName);
+		
+		System.out.println("Similar Artists:");
+		for(Artist a : similarArtists) {
+			System.out.println(a.getArtistName());
+		}
+		
+		return similarArtists;
 	}
 }

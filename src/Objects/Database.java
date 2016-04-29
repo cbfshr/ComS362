@@ -402,10 +402,6 @@ public class Database implements DatabaseInterface {
 							+"    WHERE SongName = '" +songName +"') "
 							+"AND playlistSongs.PlaylistID = (SELECT ID FROM Playlists "
 							+"    WHERE PlaylistName = '" +playlistName +"')";
-							//+"INNER JOIN Songs songs ON (playlistSongs.SongID = songs.ID) "
-							//+"INNER JOIN Playlists playlists ON (playlistSongs.PlaylistID = playlists.ID) "
-							//+"WHERE songs.SongName = '" +songName +"' "
-							//+"AND playlists.PlaylistName = '" +playlistName +"'";
 			statement.executeUpdate(query);
 			
 			return true;
@@ -441,9 +437,10 @@ public class Database implements DatabaseInterface {
 			Statement albumsStatement = database.createStatement();
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			do {
-				System.out.println("Artist retrieved: " +results.getString("ArtistName"));
+//				System.out.println("Artist retrieved: " +results.getString("ArtistName"));
 				
 				int artistID = results.getInt("ID");
+				artistName = results.getString("ArtistName");
 				int rating = results.getInt("Rating");
 				String genre = results.getString("GenreName");
 				
@@ -517,9 +514,7 @@ public class Database implements DatabaseInterface {
 				albums.add(album);
 			}
 			
-			
 			for(Album album : albums) {
-				System.err.println(album.getName() + album.getID());
 				// Get all the songs in the album
 				// This will return a bunch of tuples that we can build into the list of songs in the playlist			
 				String playlistSongsQuery =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, genres.GenreName, songs.Plays, songs.Rating "
@@ -533,7 +528,7 @@ public class Database implements DatabaseInterface {
 				
 				// Add each song to the playlist item
 				while(songResults.next()) {
-					System.err.println(songResults.getString("SongName"));
+//					System.err.println(songResults.getString("SongName"));
 					album.addSong(
 						new Song(
 							songResults.getInt("songs.ID"),
@@ -600,7 +595,6 @@ public class Database implements DatabaseInterface {
 			statement = database.createStatement();
 			
 			String query;
-			
 			if(name.isEmpty()) {
 				query =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, genres.GenreName, songs.Plays, songs.Rating "
 						+"FROM Songs songs "
@@ -608,13 +602,15 @@ public class Database implements DatabaseInterface {
 						+"INNER JOIN Albums albums ON (songs.AlbumID = albums.ID) "
 						+"INNER JOIN Genres genres ON (songs.GenreID = genres.ID) ";
 			} else {
+				if(name.contains("'")) {
+					name = name.replace("'", "''");
+				}
 				query =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, genres.GenreName, songs.Plays, songs.Rating "
 						+"FROM Songs songs "
 						+"INNER JOIN Artists artists ON (songs.ArtistID = artists.ID) "
 						+"INNER JOIN Albums albums ON (songs.AlbumID = albums.ID) "
 						+"INNER JOIN Genres genres ON (songs.GenreID = genres.ID) "
 						+"WHERE songs.SongName = '" +name +"'";
-				
 			}
 			
 			ResultSet results = statement.executeQuery(query);
@@ -622,19 +618,19 @@ public class Database implements DatabaseInterface {
 			ArrayList<Song> songs = new ArrayList<Song>();
 			while(results.next()) {
 				songs.add(
-						new Song(
-								results.getInt("songs.ID"),
-								results.getString("songs.SongName"),
-								results.getString("artists.ArtistName"),
-								results.getString("albums.AlbumName"),
-								results.getString("songs.Duration"),
-								results.getString("songs.TrackNumber"),
-								results.getString("songs.SampleRate"),
-								results.getString("songs.ContentType"),
-								results.getString("genres.GenreName"),
-								results.getInt("songs.Plays"),
-								results.getInt("songs.Rating")
-							)
+					new Song(
+						results.getInt("songs.ID"),
+						results.getString("songs.SongName"),
+						results.getString("artists.ArtistName"),
+						results.getString("albums.AlbumName"),
+						results.getString("songs.Duration"),
+						results.getString("songs.TrackNumber"),
+						results.getString("songs.SampleRate"),
+						results.getString("songs.ContentType"),
+						results.getString("genres.GenreName"),
+						results.getInt("songs.Plays"),
+						results.getInt("songs.Rating")
+					)
 				);
 			}
 			
@@ -827,6 +823,10 @@ public class Database implements DatabaseInterface {
 	@Override
 	public boolean rateSong(String songName, int rating) {
 		try {
+			if(songName.contains("'")) {
+				songName = songName.replace("'", "''");
+			}
+			
 			statement = database.createStatement();
 			String query =   "SELECT * FROM Songs "
 							+"WHERE SongName = '" +songName +"'";
@@ -874,5 +874,54 @@ public class Database implements DatabaseInterface {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public ArrayList<Artist> getSimilarArtists(String artistName) {
+		try {
+			statement = database.createStatement();
+			String query =   "SELECT * FROM Artists artists "
+							+"INNER JOIN Genres genres ON (artists.GenreID = genres.ID) "
+							+"WHERE ArtistName != '" +artistName +"' "
+							+"AND genres.ID = (SELECT GenreID from Artists "
+							+"    WHERE ArtistName = '" +artistName +"')";
+			ResultSet results = statement.executeQuery(query);
+			
+			if(!results.first()) {
+				return null;
+			}
+
+			Statement songsStatement = database.createStatement();
+			Statement albumsStatement = database.createStatement();
+			ArrayList<Artist> artists = new ArrayList<Artist>();
+			do {
+				// Get number of albums from artist:
+				int numberOfAlbums = 0;
+				query =  "SELECT COUNT(*) FROM Albums "
+						+"WHERE ArtistID = " +results.getInt("ID");
+				ResultSet albumResults = albumsStatement.executeQuery(query);
+				
+				if(albumResults.first()) {
+					numberOfAlbums = albumResults.getInt("COUNT(*)");
+				}
+				
+				// Get number of songs from artist:
+				int numberOfSongs = 0;
+				query =  "SELECT COUNT(*) FROM Songs "
+						+"WHERE ArtistID = " +results.getInt("ID");
+				ResultSet songResults = songsStatement.executeQuery(query);
+				
+				if(songResults.first()) {
+					numberOfSongs = songResults.getInt("COUNT(*)");
+				}
+				
+				artists.add(new Artist(results.getInt("ID"), results.getString("ArtistName"), results.getInt("Rating"), numberOfSongs, numberOfAlbums,results.getString("GenreName")));
+			} while(results.next());
+			return artists;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+		return null;
 	}
 }

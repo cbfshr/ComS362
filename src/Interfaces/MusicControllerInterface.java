@@ -36,6 +36,8 @@ public interface MusicControllerInterface {
 	
 	boolean				deleteSongFromPlaylist(String songName, String playlistName);
 	
+	boolean				addAllAlbumSongsToPlaylist(String albumName, String playlistName);
+	
 	boolean				addAllArtistSongsToPlaylist(String artistName, String playlistName);
 	
 	ArrayList<Song>		listSongs(String playlistName);
@@ -55,4 +57,6 @@ public interface MusicControllerInterface {
 	boolean				rateSong(String songName, int rating);
 
 	boolean				ratePlaylist(String playlistName, int rating);
+	
+	ArrayList<Artist>	getSimilarArtists(String artistName);
 }

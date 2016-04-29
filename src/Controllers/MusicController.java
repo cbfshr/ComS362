@@ -147,7 +147,16 @@ public class MusicController implements MusicControllerInterface {
 
 	@Override
 	public boolean addAllArtistSongsToPlaylist(String artistName, String playlistName) {
-		// TODO Auto-generated method stub
-		return false;
+		return musicLibrary.addAllArtistSongsToPlaylist(artistName, playlistName);
+	}
+
+	@Override
+	public boolean addAllAlbumSongsToPlaylist(String albumName, String playlistName) {
+		return musicLibrary.addAllAlbumSongsToPlaylist(albumName, playlistName);
+	}
+
+	@Override
+	public ArrayList<Artist> getSimilarArtists(String artistName) {
+		return search.getSimilarArtists(artistName);
 	}
 }
