@@ -1,0 +1,46 @@
+search 
+	artist <artist name>
+	album <album name>
+	song <song name>
+	playlist <playlist name>
+	
+artist
+	top <artist name>
+	data <artist name>
+	similar <arist name 1> <artist name 2>
+	rate <artist name> <rating #>
+	
+album
+	data <album name>
+	compare <album name 1> <album name 2>
+	rate <album name> <rating #>
+	list <album name>
+	
+song
+	data <song name>
+	compare <song name 1> <song name 2> 
+	rate <song name> <rating #>
+	
+playlist
+	create <playlist name>
+	add
+		song <playlist name> <song name>
+		artist <playlist name> <artist name>
+		album <playlist name> <album name>
+	remove <song name>
+	list <playlist name>
+	featured 
+	rename <playlist name> <new playlist name>
+	delete <playlist name>
+	rate <playlist name> <rating #>
+	
+new releases
+
+categories
+
+quit
+
+commands
+
+EX.
+artist top brucespringsteen
