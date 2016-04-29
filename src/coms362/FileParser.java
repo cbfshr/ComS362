@@ -21,12 +21,10 @@ import Objects.Song;
 public class FileParser {
 
 	public static void main(String args[]) {
-		final File test = new File("C:/Users/Cal/Music/iTunes/iTunes Media/Music/");
+		final File test = new File("C:/Users/Cal/Music/iTunes/iTunes Media/Music/Imagine Dragons/Hell And Silence");
 		
 		Database d = new Database();
-		d.listFilesForFolder(test);
-		
-		//listFilesForFolder(test);
+		listFilesForFolder(test);
 	}
 
 	public static void listFilesForFolder(final File folder) {

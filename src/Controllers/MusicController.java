@@ -1,4 +1,5 @@
 package Controllers;
+import java.io.File;
 import java.util.ArrayList;
 
 import Interfaces.MusicControllerInterface;
@@ -23,6 +24,14 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
+	public boolean populateMusicDatabase(String path) {
+		File musicLibraryPath = new File(path);
+		return musicLibrary.populateMusicLibrary(musicLibraryPath);
+	}
+	
+	// -------------------------------------------------------
+
+	@Override
 	public ArrayList<Song> searchSong(String name) {
 		return search.searchSong(name, false);
 	}
@@ -34,12 +43,22 @@ public class MusicController implements MusicControllerInterface {
 
 	@Override
 	public ArrayList<Artist> searchArtist(String name) {
-		return search.searchArtist(name);
+		return search.searchArtist(name, false);
+	}
+
+	@Override
+	public ArrayList<Artist> searchArtistDetails(String artistName) {
+		return search.searchArtist(artistName, true);
 	}
 
 	@Override
 	public ArrayList<Album> searchAlbum(String albumName) {
-		return search.searchAlbum(albumName);
+		return search.searchAlbum(albumName, false);
+	}
+
+	@Override
+	public ArrayList<Album> searchAlbumDetails(String albumName) {
+		return search.searchAlbum(albumName, true);
 	}
 
 	@Override
@@ -72,13 +91,13 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public boolean addSong(Song song, String playlistName) {
-		return musicLibrary.addSong(song, playlistName);
+	public boolean addSongToPlaylist(String songName, String playlistName) {
+		return musicLibrary.addSongToPlaylist(songName, playlistName);
 	}
 
 	@Override
-	public boolean deleteSong(Song song, String playlistName) {
-		return musicLibrary.deleteSong(song, playlistName);
+	public boolean deleteSongFromPlaylist(String songName, String playlistName) {
+		return musicLibrary.deleteSongFromPlaylist(songName, playlistName);
 	}
 	
 	@Override
@@ -124,5 +143,11 @@ public class MusicController implements MusicControllerInterface {
 	@Override
 	public boolean ratePlaylist(String playlistName, int rating) {
 		return musicLibrary.ratePlaylist(playlistName, rating);
+	}
+
+	@Override
+	public boolean addAllArtistSongsToPlaylist(String artistName, String playlistName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -36,21 +36,21 @@ public class Database implements DatabaseInterface {
 		database = databaseConnection.ConnectToDatabase();
 	}
 	
-	public void listFilesForFolder(final File folder) {
-		for(final File fileEntry : folder.listFiles()) {
-			if(fileEntry.isDirectory()) {
-				listFilesForFolder(fileEntry);
-			} else {
-				String fileName = fileEntry.getName();
-				System.out.println(fileName);
-				if(fileName.contains(".mp3")) {
-					getMetadata(fileEntry.getAbsolutePath());
-				}
-			}
-		}
-	}
+//	public void listFilesForFolder(final File folder) {
+//		for(final File fileEntry : folder.listFiles()) {
+//			if(fileEntry.isDirectory()) {
+//				listFilesForFolder(fileEntry);
+//			} else {
+//				String fileName = fileEntry.getName();
+//				System.out.println(fileName);
+//				if(fileName.contains(".mp3")) {
+//					putSongMetadata(fileEntry.getAbsolutePath());
+//				}
+//			}
+//		}
+//	}
 	
-	private void getMetadata(String filePath) {
+	public void putSongMetadata(String filePath) {
 		try {
 			InputStream input = new FileInputStream(new File(filePath));
 			ContentHandler handler = new DefaultHandler();
@@ -72,79 +72,7 @@ public class Database implements DatabaseInterface {
 			System.out.println("Sample Rate: "+metadata.get("samplerate"));
 			System.out.println("Content Type: "+metadata.get("Content-Type"));
 
-			
-			// ARTIST
-			int artistID = -1;
-			// Check if the artist has already been added to the database
-			String artistNameMetadata = metadata.get("xmpDM:artist");
-			if(artistNameMetadata != null && !artistNameMetadata.isEmpty()) {
-				if(artistNameMetadata.contains("'")) {
-					artistNameMetadata = artistNameMetadata.replace("'", "''");
-				}
-				
-				// check if the artist exists
-				Artist artist = getArtist(artistNameMetadata);
-				
-				// If the artist is not in the database...
-				if(artist == null) {
-					System.out.println("Adding artist to database.");
-					// Add the artist to the database
-					try {
-						statement = database.createStatement();
-						String query =   "INSERT INTO Artists(ArtistName) VALUES('" +artistNameMetadata +"')";
-						statement.executeUpdate(query);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					
-					// Get the artist ID from the database
-					artist = getArtist(artistNameMetadata);
-					if(artist != null) {
-						System.out.println("Got the artist! " +artist.getArtistName() +" " +artist.getArtistID());
-						artistID = artist.getArtistID();
-					}
-				} else {
-					artistID = artist.getArtistID();
-				}
-			}
-			
-
-			// ALBUM
-			int albumID = -1;
-			String albumNameMetadata = metadata.get("xmpDM:album");
-			if(albumNameMetadata != null && !albumNameMetadata.isEmpty()) {
-				if(albumNameMetadata.contains("'")) {
-					albumNameMetadata = albumNameMetadata.replace("'", "''");
-				}
-				
-				// check if the artist exists
-				Album album = getAlbum(albumNameMetadata);
-				
-				// If the artist is not in the database...
-				if(album == null) {
-					System.out.println("Adding album to database. ArtistID: " +artistID);
-					// Add the artist to the database
-					try {
-						statement = database.createStatement();
-						String query =   "INSERT INTO Albums(AlbumName, ArtistID) VALUES('" +albumNameMetadata +"', " +artistID +")";
-						statement.executeUpdate(query);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					
-					// Get the artist ID from the database
-					album = getAlbum(albumNameMetadata);
-					if(album != null) {
-						System.out.println("Got the album! " +album.getName() +" " +album.getID());
-						albumID = album.getID();
-					}
-				} else {
-					System.out.println("The album already exists in the database.");
-					albumID = album.getID();
-				}
-			}
-			
-			// ALBUM
+			// GENRE
 			int genreID = -1;
 			String genreNameMetadata = metadata.get("xmpDM:genre");
 			if(genreNameMetadata != null && !genreNameMetadata.isEmpty()) {
@@ -177,6 +105,78 @@ public class Database implements DatabaseInterface {
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
+				}
+			}
+			
+			// ARTIST
+			int artistID = -1;
+			// Check if the artist has already been added to the database
+			String artistNameMetadata = metadata.get("xmpDM:artist");
+			if(artistNameMetadata != null && !artistNameMetadata.isEmpty()) {
+				if(artistNameMetadata.contains("'")) {
+					artistNameMetadata = artistNameMetadata.replace("'", "''");
+				}
+				
+				// check if the artist exists
+				Artist artist = getArtist(artistNameMetadata);
+				
+				// If the artist is not in the database...
+				if(artist == null) {
+					System.out.println("Adding artist to database.");
+					// Add the artist to the database
+					try {
+						statement = database.createStatement();
+						String query =   "INSERT INTO Artists(ArtistName, GenreID) VALUES('" +artistNameMetadata +"', " +genreID +")";
+						statement.executeUpdate(query);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					
+					// Get the artist ID from the database
+					artist = getArtist(artistNameMetadata);
+					if(artist != null) {
+						System.out.println("Got the artist! " +artist.getArtistName() +" " +artist.getArtistID());
+						artistID = artist.getArtistID();
+					}
+				} else {
+					artistID = artist.getArtistID();
+				}
+			}
+			
+
+			// ALBUM
+			int albumID = -1;
+			String albumNameMetadata = metadata.get("xmpDM:album");
+			if(genreID != -1 && artistID != -1 && albumNameMetadata != null && !albumNameMetadata.isEmpty()) {
+				// check if the artist exists
+				Album album = getAlbum(albumNameMetadata);
+				
+				if(albumNameMetadata.contains("'")) {
+					albumNameMetadata = albumNameMetadata.replace("'", "''");
+				}
+				
+				// If the artist is not in the database...
+				if(album == null) {
+					System.out.println("Adding album to database. ArtistID: " +artistID);
+					// Add the artist to the database
+					try {
+						statement = database.createStatement();
+						String query =   "INSERT INTO Albums(AlbumName, ArtistID, GenreID, ReleaseDate) "
+										+"VALUES('" +albumNameMetadata +"', " +artistID +", " +genreID +", '" +metadata.get("xmpDM:releaseDate") +"')";
+						statement.executeUpdate(query);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					
+					// Get the artist ID from the database
+					album = getAlbum(albumNameMetadata);
+					if(album != null) {
+						System.out.println("Got the album! " +album.getName() +" " +album.getID());
+						albumID = album.getID();
+					}
+				} else {
+					System.out.println("The album already exists in the database.");
+					albumID = album.getID();
 				}
 			}
 			
@@ -371,14 +371,59 @@ public class Database implements DatabaseInterface {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean addSongToPlaylist(String songName, String playlistName) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "INSERT INTO PlaylistSongs(SongID, PlaylistID) "
+							+"SELECT songs.ID, playlists.ID "
+							+"FROM Songs songs, Playlists playlists "
+							+"WHERE songs.SongName = '" +songName +"' "
+							+"AND playlists.PlaylistName = '" +playlistName +"'";
+			statement.executeUpdate(query);
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean deleteSongFromPlaylist(String songName, String playlistName) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "DELETE FROM PlaylistSongs "
+							+"WHERE playlistSongs.SongID = (SELECT ID FROM Songs "
+							+"    WHERE SongName = '" +songName +"') "
+							+"AND playlistSongs.PlaylistID = (SELECT ID FROM Playlists "
+							+"    WHERE PlaylistName = '" +playlistName +"')";
+							//+"INNER JOIN Songs songs ON (playlistSongs.SongID = songs.ID) "
+							//+"INNER JOIN Playlists playlists ON (playlistSongs.PlaylistID = playlists.ID) "
+							//+"WHERE songs.SongName = '" +songName +"' "
+							//+"AND playlists.PlaylistName = '" +playlistName +"'";
+			statement.executeUpdate(query);
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 
 	@Override
 	public ArrayList<Artist> getAllArtists(String artistName) {
 		try {
 			statement = database.createStatement();
 			
-			String query =   "SELECT * FROM Artists "
-							+"WHERE ArtistName = '" +artistName +"'";
+			String query =   "SELECT * FROM Artists artists "
+							+"INNER JOIN Genres genres ON (artists.GenreID = genres.ID) "
+							+"WHERE ArtistName = '" +artistName +"' ";
 			ResultSet results = statement.executeQuery(query);
 			
 			if(!results.first()) {
@@ -387,10 +432,37 @@ public class Database implements DatabaseInterface {
 			}
 			
 			System.out.println("Getting artist");
+			Statement songsStatement = database.createStatement();
+			Statement albumsStatement = database.createStatement();
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			do {
 				System.out.println("Artist retrieved: " +results.getString("ArtistName"));
-				artists.add(new Artist(results.getInt("ID"), results.getString("ArtistName"), results.getInt("Rating")));
+				
+				int artistID = results.getInt("ID");
+				int rating = results.getInt("Rating");
+				String genre = results.getString("GenreName");
+				
+				// Get number of albums from artist:
+				int numberOfAlbums = 0;
+				query =  "SELECT COUNT(*) FROM Albums "
+						+"WHERE ArtistID = " +artistID;
+				ResultSet albumResults = albumsStatement.executeQuery(query);
+				
+				if(albumResults.first()) {
+					numberOfAlbums = albumResults.getInt("COUNT(*)");
+				}
+				
+				// Get number of songs from artist:
+				int numberOfSongs = 0;
+				query =  "SELECT COUNT(*) FROM Songs "
+						+"WHERE ArtistID = " +artistID;
+				ResultSet songResults = songsStatement.executeQuery(query);
+				
+				if(songResults.first()) {
+					numberOfSongs = songResults.getInt("COUNT(*)");
+				}
+				
+				artists.add(new Artist(artistID, artistName, rating, numberOfSongs, numberOfAlbums, genre));
 			} while(results.next());
 			
 			return artists;
@@ -408,24 +480,35 @@ public class Database implements DatabaseInterface {
 			String query;
 			
 			if(albumName.isEmpty()) {
-				query =   "SELECT albums.ID, albums.AlbumName, artists.ArtistName, albums.Rating "
+				query =   "SELECT albums.ID, albums.AlbumName, artists.ArtistName, albums.Rating, albums.ReleaseDate "
 							+"FROM Albums albums "
 							+"INNER JOIN Artists artists ON (albums.ArtistID = artists.ID)";
 			} else {
 				if(albumName.contains("'")) {
 					albumName = albumName.replace("'", "''");
 				}
-				query =   "SELECT albums.ID, albums.AlbumName, artists.ArtistName, albums.Rating "
+				query =   "SELECT albums.ID, albums.AlbumName, artists.ArtistName, albums.Rating, albums.ReleaseDate "
 						 +"FROM Albums albums "
 						 +"INNER JOIN Artists artists ON (albums.ArtistID = artists.ID)"
 						 +"WHERE AlbumName = '" +albumName +"'";
 			}
 			
 			ResultSet results = statement.executeQuery(query);
-			
+
+			Statement songsStatement = database.createStatement();
 			ArrayList<Album> albums = new ArrayList<Album>();
 			while(results.next()) {
-				Album album = new Album(results.getInt("ID"), results.getString("AlbumName"), results.getString("ArtistName"), results.getInt("Rating"));
+				// Get number of songs in the album:
+				int numberOfSongs = 0;
+				query =  "SELECT COUNT(*) FROM Songs "
+						+"WHERE AlbumID = " +results.getInt("ID");
+				ResultSet songResults = songsStatement.executeQuery(query);
+				
+				if(songResults.first()) {
+					numberOfSongs = songResults.getInt("COUNT(*)");
+				}
+				
+				Album album = new Album(results.getInt("ID"), results.getString("AlbumName"), results.getString("ArtistName"), results.getInt("Rating"), results.getString("ReleaseDate"), numberOfSongs);
 				albums.add(album);
 			}
 			

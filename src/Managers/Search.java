@@ -17,24 +17,40 @@ public class Search implements SearchInterface {
 	}
 	
 	@Override
-	public ArrayList<Album> searchAlbum(String albumName) {
+	public ArrayList<Album> searchAlbum(String albumName, boolean showDetails) {
 		ArrayList<Album> albums = database.getAllAlbums(albumName);
 		
-		System.out.println("Albums:");
+		if(!showDetails) {
+			System.out.println("Album");
+		} else {
+			System.out.println(String.format("%-25s%-20s%-25s%-15s%-10s", "Album", "Artist", "Number of Songs", "Release Date", "Rating"));
+		}
 		for(Album album :albums) {
-			System.out.println(album.getName() +" - " +album.getArtist() +" (Rating: " +album.getRating() +")");
+			if(!showDetails) {
+				System.out.println(album.getName() +" - " +album.getArtist());
+			} else {
+				System.out.println(String.format("%-25s%-20s%-25s%-15s%-10s", album.getName(), album.getArtist(), album.getNumberOfSongs(), album.getReleaseDate(), album.getRating()));
+			}
 		}
 		
 		return albums;
 	}
 
 	@Override
-	public ArrayList<Artist> searchArtist(String name) {
+	public ArrayList<Artist> searchArtist(String name, boolean showDetails) {
 		ArrayList<Artist> artists = database.getAllArtists(name);
 
-		System.out.println("Artists:");
+		if(!showDetails) {
+			System.out.println("Artists:");
+		} else {
+			System.out.println(String.format("%-25s%-20s%-20s%-20s%-10s", "Artist", "Genre", "Number of Albums", "Number of Songs", "Rating"));
+		}
 		for(Artist artist : artists) {
-			System.out.println(artist.getArtistName() +" (Rating: " +artist.getRating() +")");
+			if(!showDetails) {
+				System.out.println(artist.getArtistName() +" (Rating: " +artist.getRating() +")");
+			} else {
+				System.out.println(String.format("%-25s%-20s%-20s%-20s%-10s", artist.getArtistName(), artist.getGenre(), artist.getNumberOfAlbums(), artist.getNumberOfSongs(), artist.getRating()));
+			}
 		}
 		
 		return artists;

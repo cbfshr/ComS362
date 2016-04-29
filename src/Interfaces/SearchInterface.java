@@ -7,9 +7,9 @@ import Objects.Playlist;
 import Objects.Song;
 
 public interface SearchInterface {
-	ArrayList<Album>	searchAlbum(String name);
+	ArrayList<Album>	searchAlbum(String name, boolean showDetails);
 
-	ArrayList<Artist>	searchArtist(String name);
+	ArrayList<Artist>	searchArtist(String name, boolean showDetails);
 
 	ArrayList<String>	searchGenre(String name);
 

@@ -17,16 +17,27 @@ DROP TABLE Playlists;
 DROP TABLE Songs;
 DROP TABLE Albums;
 DROP TABLE Artists;
+DROP TABLE Genres;
 
 -- ---------------------
 -- Create the Tables --
 -- ---------------------
+-- Create a table to hold all the Genre names
+CREATE TABLE Genres (
+	ID int NOT NULL AUTO_INCREMENT,
+	GenreName varchar(50) NOT NULL,
+	Rating int,
+	PRIMARY KEY (ID, GenreName)
+);
+
 -- Create a table to hold all the Artist names
 CREATE TABLE Artists (
 	ID int NOT NULL AUTO_INCREMENT,
 	ArtistName varchar(50),
+	GenreID int,
 	Rating int,
-	PRIMARY KEY (ID, ArtistName)
+	PRIMARY KEY (ID, ArtistName),
+	FOREIGN KEY (GenreID) REFERENCES Genres(ID) ON DELETE CASCADE
 );
 
 -- Create a table to hold all the Album names
@@ -34,17 +45,12 @@ CREATE TABLE Albums (
 	ID int NOT NULL AUTO_INCREMENT,
 	AlbumName varchar(50) NOT NULL,
 	ArtistID int,
+	GenreID int,
 	Rating int,
+	ReleaseDate varchar(30),
 	PRIMARY KEY (ID, AlbumName),
-	FOREIGN KEY (ArtistID) REFERENCES Artists(ID) ON DELETE CASCADE
-);
-
--- Create a table to hold all the Genre names
-CREATE TABLE Genres (
-	ID int NOT NULL AUTO_INCREMENT,
-	GenreName varchar(50) NOT NULL,
-	Rating int,
-	PRIMARY KEY (ID, GenreName)
+	FOREIGN KEY (ArtistID) REFERENCES Artists(ID) ON DELETE CASCADE,
+	FOREIGN KEY (GenreID) REFERENCES Genres(ID) ON DELETE CASCADE
 );
 
 -- Create Table Songs

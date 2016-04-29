@@ -77,22 +77,32 @@ public class HelloWorld {
 //		musicController.searchSongDetails("The End Of All Things");
 
 
-		musicController.searchPlaylist("");
-		musicController.createPlaylist("Playlist1");
-		musicController.searchPlaylist("");
+//		musicController.searchPlaylist("");
+//		musicController.createPlaylist("Playlist1");
+//		musicController.searchPlaylist("");
+//
+//		musicController.ratePlaylist("Playlist1", 2);
+//
+//		musicController.searchPlaylist("");
 
-		musicController.ratePlaylist("Playlist1", 2);
-
-		musicController.searchPlaylist("");
-		
+		//musicController.searchPlaylist("");
+		//musicController.createPlaylist("Playlist1");
+		//musicController.addSongToPlaylist("Selene", "Playlist1");
+		//musicController.deleteSongFromPlaylist("Selene", "Playlist1");
+		//musicController.searchPlaylist("");
 		
 //		musicController.searchAlbum("Vessel");
 //		musicController.rateAlbum("Vessel", 1);
 //		musicController.searchAlbum("Vessel");
 		
 		
-		// Design flaw: When we are searching songs, should we be creating them with Artist and Album objects?
-		// If we do this, we would have to build an artist and album for every song retrieved from the database
-		// This sounds like an awful idea. There must be an easier way around it..
+		
+//		musicController.populateMusicDatabase("C:/Users/Cal/Music/iTunes/iTunes Media/Music/Imagine Dragons");
+
+		musicController.searchAlbum("Hell And Silence");
+		musicController.searchAlbumDetails("Hell And Silence");
+		
+		musicController.searchArtist("Imagine Dragons");
+		musicController.searchArtistDetails("Imagine Dragons");
 	}
 }

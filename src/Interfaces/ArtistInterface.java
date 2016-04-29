@@ -6,4 +6,10 @@ public interface ArtistInterface {
 	public String getArtistName();
 	
 	public int getRating();
+	
+	public int getNumberOfSongs();
+
+	public int getNumberOfAlbums();
+	
+	public String getGenre();
 }

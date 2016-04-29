@@ -1,7 +1,7 @@
 package Managers;
 
+import java.io.File;
 import java.util.ArrayList;
-
 import Interfaces.LibraryInterface;
 import Objects.Album;
 import Objects.Database;
@@ -13,6 +13,23 @@ public class MusicLibrary implements LibraryInterface {
 	
 	public MusicLibrary(Database database) {
 		this.database = database;
+	}
+
+	@Override
+	public boolean populateMusicLibrary(File musicLibraryFolder) {		
+		for(final File fileEntry : musicLibraryFolder.listFiles()) {
+			if(fileEntry.isDirectory()) {
+				populateMusicLibrary(fileEntry);
+			} else {
+				String fileName = fileEntry.getName();
+				System.out.println(fileName);
+				
+				if(fileName.contains(".mp3")) {
+					database.putSongMetadata(fileEntry.getAbsolutePath());
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -34,33 +51,26 @@ public class MusicLibrary implements LibraryInterface {
 	}
 	
 	@Override
-	public boolean addSong(Song song, String playlistName) {
-		Playlist playlist = database.getPlaylist(playlistName);
-		if(playlist == null) {
-			System.err.println("Playlist not found.");
-		}
-		
-		playlist.addSong(song);
-		
-		boolean putPlaylist = database.putPlaylist(playlist);
-		
-		return putPlaylist;
-	}
-
-	@Override
-	public boolean deleteSong(Song song, String playlistName) {
-		Playlist playlist = database.getPlaylist(playlistName);
-
-		if(playlist == null) {
-			System.err.println("Playlist not found!");
+	public boolean addSongToPlaylist(String songName, String playlistName) {
+		if(songName.isEmpty()) {
+			System.err.println("Song name is empty.");
 			return false;
 		}
 		
-		playlist.deleteSong(song.getID());
+		boolean addSong = database.addSongToPlaylist(songName, playlistName);
 		
-		boolean putPlaylist = database.putPlaylist(playlist);
+		return addSong;
+	}
+
+	@Override
+	public boolean deleteSongFromPlaylist(String songName, String playlistName) {
+		if(songName.isEmpty()) {
+			System.err.println("Cannot remove song from playlist. The song name is empty.");
+		}
 		
-		return putPlaylist;
+		boolean deleteSong = database.deleteSongFromPlaylist(songName, playlistName);
+		
+		return deleteSong;
 	}
 
 	@Override

@@ -16,4 +16,8 @@ public interface AlbumInterface {
 	public void addSong(Song song);
 	
 	public int getRating();
+	
+	public String getReleaseDate();
+	
+	public int getNumberOfSongs();
 }

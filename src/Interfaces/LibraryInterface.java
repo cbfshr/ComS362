@@ -1,15 +1,16 @@
 package Interfaces;
-import java.util.ArrayList;
 
-import Objects.Album;
-import Objects.Artist;
+import java.io.File;
+import java.util.ArrayList;
 import Objects.Playlist;
 import Objects.Song;
 
 public interface LibraryInterface {
-	boolean				addSong(Song song, String playlistName);
+	boolean				populateMusicLibrary(File path);
 	
-	boolean				deleteSong(Song song, String playlistName);
+	boolean				addSongToPlaylist(String songName, String playlistName);
+	
+	boolean				deleteSongFromPlaylist(String songName, String playlistName);
 	
 	ArrayList<Song>		listSongs(String playlistName);
 	

@@ -8,7 +8,7 @@ import Objects.Playlist;
 import Objects.Song;
 
 public interface DatabaseInterface {
-	void				listFilesForFolder(final File folder);
+	void				putSongMetadata(String filename);
 	
 //	Song				getSong(int songID, int playlistID);
 
@@ -21,6 +21,10 @@ public interface DatabaseInterface {
     Playlist			getPlaylist(String playlistName);
     
     boolean				putPlaylist(Playlist playlist);
+    
+    boolean				addSongToPlaylist(String songName, String playlistName);
+    
+    boolean				deleteSongFromPlaylist(String songName, String playlistName);
     
     ArrayList<Artist>	getAllArtists(String artistName);
     
