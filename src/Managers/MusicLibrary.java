@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import Interfaces.LibraryInterface;
 import Objects.Album;
+import Objects.Artist;
 import Objects.Database;
 import Objects.Playlist;
 import Objects.Song;
@@ -53,24 +54,37 @@ public class MusicLibrary implements LibraryInterface {
 	@Override
 	public boolean addSongToPlaylist(String songName, String playlistName) {
 		if(songName.isEmpty()) {
-			System.err.println("Song name is empty.");
+			System.err.println("Cannot remove song from playlist. The song name is empty.");
+			return false;
+		}
+
+		Playlist playlist = database.getPlaylist(playlistName);
+		
+		if(playlist != null) {
 			return false;
 		}
 		
-		boolean addSong = database.addSongToPlaylist(songName, playlistName);
+		playlist.addSong(songName);
 		
-		return addSong;
+		return database.putPlaylist(playlist);
 	}
 
 	@Override
 	public boolean deleteSongFromPlaylist(String songName, String playlistName) {
 		if(songName.isEmpty()) {
 			System.err.println("Cannot remove song from playlist. The song name is empty.");
+			return false;
+		}
+
+		Playlist playlist = database.getPlaylist(playlistName);
+		
+		if(playlist != null) {
+			return false;
 		}
 		
-		boolean deleteSong = database.deleteSongFromPlaylist(songName, playlistName);
+		playlist.deleteSong(songName);
 		
-		return deleteSong;
+		return database.putPlaylist(playlist);
 	}
 
 	@Override
@@ -89,25 +103,6 @@ public class MusicLibrary implements LibraryInterface {
 		
 		return playlist.getAllSongs();
 	}
-	
-	@Override
-	public ArrayList<Song> listSongsAlbum(String albumName) {
-		ArrayList<Album> albums = database.getAllAlbums(albumName);
-	
-		if(albums == null || albums.isEmpty()) {
-			System.err.println("Album not found!");
-			return null;
-		}
-		
-		for(Album album : albums) {
-			System.out.println("Album: " +album.getName()+" - " +album.getArtist());
-			for(Song s : album.getSongs()) {
-				System.out.println(s.getName());
-			}
-		}
-		
-		return null;
-	}
 
 	@Override
 	public Playlist getPlaylist(String playlistName) {
@@ -118,7 +113,11 @@ public class MusicLibrary implements LibraryInterface {
 
 	@Override
 	public boolean renamePlaylist(String playlistName, String newPlaylistName) {
-		return database.renamePlaylist(playlistName, newPlaylistName);
+		Playlist playlist = database.getPlaylist(playlistName);
+		
+		playlist.renamePlaylist(playlistName, newPlaylistName);
+		
+		return database.putPlaylist(playlist);
 	}
 
 	@Override
@@ -140,44 +139,53 @@ public class MusicLibrary implements LibraryInterface {
 
 	@Override
 	public boolean rateArtist(String artistName, int rating) {
-		return database.rateArtist(artistName, rating);
+		Artist artist = database.getPlaylist(artistName);
+		
+		artist.rate(rating);
+		
+		return database.putPlaylist(artist);
 	}
 
 	@Override
 	public boolean rateAlbum(String albumName, int rating) {
-		return database.rateAlbum(albumName, rating);
+		Album album = database.getAlbum(albumName);
+		
+		album.rate(rating);
+		
+		return database.putAlbum(album);
 	}
 
 	@Override
 	public boolean rateSong(String songName, int rating) {
-		return database.rateSong(songName, rating);
+		Song song = database.getSong(songName);
+		
+		song.rate(rating);
+		
+		return database.putSong(song);
 	}
 
 	@Override
 	public boolean ratePlaylist(String playlistName, int rating) {
-		return database.ratePlaylist(playlistName, rating);
+		Playlist playlist = database.getPlaylist(playlistName);
+		
+		playlist.rate(rating);
+		
+		return database.putPlaylist(playlist);
 	}
 
 	@Override
 	public boolean addAllAlbumSongsToPlaylist(String albumName, String playlistName) {
 		Album album = database.getAlbum(albumName);
+		Playlist playlist = database.getPlaylist(playlistName);
 		
-		if(album == null) {
+		if(album == null || playlist == null) {
 			return false;
 		}
 		
 		ArrayList<Song> albumSongs = album.getSongs();
 		
-		for(Song s : albumSongs) {
-			database.addSongToPlaylist(s.getName(), playlistName);
-		}
+		playlist.addSongList(albumSongs);
 		
-		return false;
-	}
-
-	@Override
-	public boolean addAllArtistSongsToPlaylist(String artistName, String playlistName) {
-		// TODO Auto-generated method stub
-		return false;
+		return database.putPlaylist(playlist);
 	}
 }

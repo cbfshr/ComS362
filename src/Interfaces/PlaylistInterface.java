@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import Objects.Song;
 
 public interface PlaylistInterface {
+	boolean			addSongList(ArrayList<Song> songs);
+	boolean			rate(int rating);
+	
+	// ------------------------
 	int 			getID();
 	
 	String			getName();

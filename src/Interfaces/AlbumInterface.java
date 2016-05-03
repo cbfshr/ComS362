@@ -2,9 +2,17 @@ package Interfaces;
 
 import java.util.ArrayList;
 
+import Objects.Album;
 import Objects.Song;
 
 public interface AlbumInterface {
+	String getAlbumData();
+	String getTrackList();
+	String compare(Album album2);
+	boolean			rate(int rating);
+	
+	
+	// -------------------
 	public int getID();
 	
 	public String getArtist();

@@ -1,6 +1,15 @@
 package Interfaces;
 
+import Objects.Song;
+
 public interface SongInterface {
+	String compare(Song song2);
+	String getSongData();
+	boolean			rate(int rating);
+	
+	
+	
+	// ---------------------------
 	int		getID();
 	
 	String	getName();
