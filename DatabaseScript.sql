@@ -90,42 +90,11 @@ CREATE TABLE PlaylistSongs (
 	FOREIGN KEY (PlaylistID) REFERENCES Playlists(ID) ON DELETE CASCADE
 );
 
-
--- ---------------------------------
--- Insert Data into the Database --
--- ---------------------------------
--- Insert Artist Names into Artists
--- INSERT INTO Artists(ArtistName) values('Green Day');
--- INSERT INTO Artists(ArtistName) values('Panic! At the Disco');
--- INSERT INTO Artists(ArtistName) values('The Griswolds');
--- INSERT INTO Artists(ArtistName) values('AC/DC');
--- INSERT INTO Artists(ArtistName) values('The Wombats');
-
--- Insert Album Names into Albums
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('American Idiot', 1);
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('Be Impressive', 3);
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('Greek Tragedy', 5);
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('Back in Black', 4);
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('The Razor''s Edge', 4);
--- INSERT INTO Albums(AlbumName, ArtistID) VALUES('Death of a Bachelor', 2);
-
--- Insert Song Names in Songs
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Boulevard of Broken Dreams', 1, 1, 123);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Beware the Dog', 3, 2, 253);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('American Idiot', 1, 1, 401);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Greek Tragedy', 5, 3, 79);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Thunderstruck', 4, 5, 169);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Hells Bells', 4, 4, 20);
--- INSERT INTO Songs(SongName, ArtistID, AlbumID, Plays) VALUES('Victorious', 2, 6, 64);
-
--- SELECT * FROM Artists WHERE ArtistName = "Green Day";
--- DELETE FROM Artists WHERE ArtistName = "Green Day";
-
 -- ----------------------------
 -- Show Database Information --
 -- ----------------------------
 SHOW TABLES;
 
-SELECT * FROM Artists;
-SELECT * FROM Albums;
-SELECT * FROM Songs;
+-- SELECT * FROM Artists;
+-- SELECT * FROM Albums;
+-- SELECT * FROM Songs;

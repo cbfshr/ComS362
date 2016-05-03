@@ -20,6 +20,10 @@ public class Search implements SearchInterface {
 	public ArrayList<Album> searchAlbum(String albumName, boolean showDetails) {
 		ArrayList<Album> albums = database.getAllAlbums(albumName);
 		
+		if(albums == null) {
+			return null;
+		}
+		
 		if(!showDetails) {
 			System.out.println("Album");
 		} else {
@@ -64,6 +68,10 @@ public class Search implements SearchInterface {
 	public ArrayList<Song> searchSong(String name, boolean showDetails) {
 		ArrayList<Song> songs = database.getAllSongs(name);
 
+		if(songs == null) {
+			return null;
+		}
+		
 		if(!showDetails) {
 			System.out.println(String.format("%-25s%-20s", "Song", "Artist"));
 		} else {
@@ -109,6 +117,10 @@ public class Search implements SearchInterface {
 	public ArrayList<Playlist> searchPlaylist(String name) {
 		ArrayList<Playlist> playlists = database.getAllPlaylists(name);
 		
+		if(playlists == null) {
+			return null;
+		}
+		
 		for(Playlist playlist : playlists) {
 			if(playlist.isFeatured()) {
 				System.out.println(playlist.getName() +" (*Featured Playlist)" +"(Rating: " +playlist.getRating() +")");
@@ -124,6 +136,10 @@ public class Search implements SearchInterface {
 	public ArrayList<String> searchGenre(String name) {
 		ArrayList<String> genres = database.getAllGenres(name);
 
+		if(genres == null) {
+			return null;
+		}
+		
 		System.out.println("Genres:");
 		for(String s : genres) {
 			System.out.println(s);
@@ -136,6 +152,10 @@ public class Search implements SearchInterface {
 	public ArrayList<Artist> getSimilarArtists(String artistName) {
 		ArrayList<Artist> similarArtists = database.getSimilarArtists(artistName);
 		
+		if(similarArtists == null) {
+			return null;
+		}
+		
 		System.out.println("Similar Artists:");
 		for(Artist a : similarArtists) {
 			System.out.println(a.getArtistName());
@@ -147,6 +167,10 @@ public class Search implements SearchInterface {
 	@Override
 	public ArrayList<Album> getNewReleases() {
 		ArrayList<Album> newReleases = database.getNewReleases();
+		
+		if(newReleases == null) {
+			return null;
+		}
 		
 		int i = 1;
 		
