@@ -257,11 +257,6 @@ public class Database implements DatabaseInterface {
 	
 			// Get all the songs in the playlist
 			// This will return a bunch of tuples that we can build into the list of songs in the playlist		
-			
-//			query =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, songs.Genre, songs.Plays "
-//					+"FROM Songs songs "
-//					+"INNER JOIN Artists artists ON (songs.ArtistID = artists.ID) "
-//					+"INNER JOIN Albums albums ON (songs.AlbumID = albums.ID) ";
 			String playlistSongsQuery =  "SELECT songs.ID, songs.SongName, artists.ArtistName, albums.AlbumName, songs.Duration, songs.TrackNumber, songs.SampleRate, songs.ContentType, genres.GenreName, songs.Plays, songs.Rating "
 										+"FROM PlaylistSongs playlistSongs "
 										+"INNER JOIN Songs songs ON (playlistSongs.SongID = songs.ID) "
@@ -275,19 +270,19 @@ public class Database implements DatabaseInterface {
 			// Add each song to the playlist item
 			while(results.next()) {
 				playlist.addSong(
-						new Song(
-								results.getInt("songs.ID"),
-								results.getString("songs.SongName"),
-								results.getString("artists.ArtistName"),
-								results.getString("albums.AlbumName"),
-								results.getString("songs.Duration"),
-								results.getString("songs.TrackNumber"),
-								results.getString("songs.SampleRate"),
-								results.getString("songs.ContentType"),
-								results.getString("genres.GenreName"),
-								results.getInt("songs.Plays"),
-								results.getInt("songs.Rating")
-							)
+					new Song(
+						results.getInt("songs.ID"),
+						results.getString("songs.SongName"),
+						results.getString("artists.ArtistName"),
+						results.getString("albums.AlbumName"),
+						results.getString("songs.Duration"),
+						results.getString("songs.TrackNumber"),
+						results.getString("songs.SampleRate"),
+						results.getString("songs.ContentType"),
+						results.getString("genres.GenreName"),
+						results.getInt("songs.Plays"),
+						results.getInt("songs.Rating")
+					)
 				);
 			}
 			
@@ -863,7 +858,7 @@ public class Database implements DatabaseInterface {
 	}
 
 	@Override
-	public ArrayList<Artist> getSimilarArtists(String artistName) {
+	public ArrayList<Artist> getSimilarArtists(String artistName, String metadata) {
 		try {
 			statement = database.createStatement();
 			String query =   "SELECT * FROM Artists artists "
@@ -978,6 +973,91 @@ public class Database implements DatabaseInterface {
 			}
 			
 			return albums;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public boolean putSong(Song song) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "UPDATE Songs "
+							+"SET Rating = " +song.getRating() +" "
+							+"WHERE AlbumID = " +song.getID();
+			statement.executeUpdate(query);
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean putAlbum(Album album) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "UPDATE Albums "
+							+"SET Rating = " +album.getRating() +" "
+							+"WHERE AlbumID = " +album.getID();
+			statement.executeUpdate(query);
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean putArtist(Artist artist) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "UPDATE Artists "
+							+"SET Rating = " +artist.getRating() +" "
+							+"WHERE AlbumID = " +artist.getArtistID();
+			statement.executeUpdate(query);
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public Song getSong(String songName) {
+		try {
+			statement = database.createStatement();
+			
+			String query =   "SELECT * FROM Songs "
+							+"WHERE SongName = " +songName;
+			ResultSet songResults = statement.executeQuery(query);
+			
+			Song song = new Song(
+							songResults.getInt("songs.ID"),
+							songResults.getString("songs.SongName"),
+							songResults.getString("artists.ArtistName"),
+							songResults.getString("albums.AlbumName"),
+							songResults.getString("songs.Duration"),
+							songResults.getString("songs.TrackNumber"),
+							songResults.getString("songs.SampleRate"),
+							songResults.getString("songs.ContentType"),
+							songResults.getString("genres.GenreName"),
+							songResults.getInt("songs.Plays"),
+							songResults.getInt("songs.Rating")
+						);
+			
+			return song;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

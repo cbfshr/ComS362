@@ -1,7 +1,7 @@
 package Controllers;
+
 import java.io.File;
 import java.util.ArrayList;
-
 import Interfaces.MusicControllerInterface;
 import Managers.MusicLibrary;
 import Managers.Search;
@@ -30,7 +30,8 @@ public class MusicController implements MusicControllerInterface {
 	}
 	
 	// -------------------------------------------------------
-
+	// Search Methods
+	// -------------------------------------------------------
 	@Override
 	public ArrayList<Song> searchSong(String name) {
 		return search.searchSong(name, false);
@@ -106,11 +107,6 @@ public class MusicController implements MusicControllerInterface {
 	}
 	
 	@Override
-	public ArrayList<Song> listSongsAlbum(String albumName) {
-		return musicLibrary.listSongsAlbum(albumName);
-	}
-
-	@Override
 	public boolean renamePlaylist(String playlistName, String newPlaylistName) {
 		return musicLibrary.renamePlaylist(playlistName, newPlaylistName);
 	}
@@ -146,18 +142,13 @@ public class MusicController implements MusicControllerInterface {
 	}
 
 	@Override
-	public boolean addAllArtistSongsToPlaylist(String artistName, String playlistName) {
-		return musicLibrary.addAllArtistSongsToPlaylist(artistName, playlistName);
-	}
-
-	@Override
 	public boolean addAllAlbumSongsToPlaylist(String albumName, String playlistName) {
 		return musicLibrary.addAllAlbumSongsToPlaylist(albumName, playlistName);
 	}
 
 	@Override
 	public ArrayList<Artist> getSimilarArtists(String artistName) {
-		return search.getSimilarArtists(artistName);
+		return musicLibrary.getSimilarArtists(artistName);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package Interfaces;
 
 import java.util.ArrayList;
-
 import Objects.Song;
 
 public interface PlaylistInterface {
@@ -17,7 +16,7 @@ public interface PlaylistInterface {
 	
 	boolean			addSong(Song song);
 	
-	boolean			deleteSong(int songID);
+	boolean			deleteSong(String songName);
 
 	ArrayList<Song>	getAllSongs();
 	

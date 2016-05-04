@@ -1,16 +1,21 @@
 package Interfaces;
-import java.io.File;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import Objects.Album;
 import Objects.Artist;
 import Objects.Playlist;
 import Objects.Song;
 
 public interface DatabaseInterface {
+	boolean				putSong(Song song);
+	
+	boolean				putAlbum(Album album);
+	
+	boolean				putArtist(Artist artist);
+	
 	void				putSongMetadata(String filename);
 	
-//	Song				getSong(int songID, int playlistID);
+	Song				getSong(String songName);
 
     Artist				getArtist(String artistName);
     
@@ -50,7 +55,7 @@ public interface DatabaseInterface {
 
 	boolean				ratePlaylist(String playlistName, int rating);
 	
-	ArrayList<Artist>	getSimilarArtists(String artistName);
+	ArrayList<Artist>	getSimilarArtists(String artistName, String metadata);
 	
 	ArrayList<Album>	getNewReleases();
 }

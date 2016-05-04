@@ -1,7 +1,6 @@
 package Objects;
 
 import java.util.ArrayList;
-
 import Interfaces.PlaylistInterface;
 
 public class Playlist implements PlaylistInterface {
@@ -42,8 +41,8 @@ public class Playlist implements PlaylistInterface {
 	}
 
 	@Override
-	public boolean deleteSong(int songID) {
-		return songs.remove(songs.get(songID));
+	public boolean deleteSong(String songName) {
+		return songs.remove(songName);
 	}
 
 	@Override

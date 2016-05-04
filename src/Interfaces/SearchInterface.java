@@ -1,6 +1,6 @@
 package Interfaces;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import Objects.Album;
 import Objects.Artist;
 import Objects.Playlist;
@@ -18,8 +18,6 @@ public interface SearchInterface {
 	ArrayList<Song>		searchTopSongs(String artistName);
 	
 	ArrayList<Playlist>	searchPlaylist(String name);
-	
-	ArrayList<Artist>	getSimilarArtists(String artistName);
 	
 	ArrayList<Album>	getNewReleases();
 }

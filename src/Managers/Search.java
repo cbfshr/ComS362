@@ -149,22 +149,6 @@ public class Search implements SearchInterface {
 	}
 
 	@Override
-	public ArrayList<Artist> getSimilarArtists(String artistName) {
-		ArrayList<Artist> similarArtists = database.getSimilarArtists(artistName);
-		
-		if(similarArtists == null) {
-			return null;
-		}
-		
-		System.out.println("Similar Artists:");
-		for(Artist a : similarArtists) {
-			System.out.println(a.getArtistName());
-		}
-		
-		return similarArtists;
-	}
-
-	@Override
 	public ArrayList<Album> getNewReleases() {
 		ArrayList<Album> newReleases = database.getNewReleases();
 		

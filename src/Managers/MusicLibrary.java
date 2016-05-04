@@ -59,12 +59,13 @@ public class MusicLibrary implements LibraryInterface {
 		}
 
 		Playlist playlist = database.getPlaylist(playlistName);
+		Song song = database.getSong(songName);
 		
-		if(playlist != null) {
+		if(playlist == null && song == null) {
 			return false;
 		}
 		
-		playlist.addSong(songName);
+		playlist.addSong(song);
 		
 		return database.putPlaylist(playlist);
 	}
@@ -115,7 +116,7 @@ public class MusicLibrary implements LibraryInterface {
 	public boolean renamePlaylist(String playlistName, String newPlaylistName) {
 		Playlist playlist = database.getPlaylist(playlistName);
 		
-		playlist.renamePlaylist(playlistName, newPlaylistName);
+		playlist.rename(newPlaylistName);
 		
 		return database.putPlaylist(playlist);
 	}
@@ -139,11 +140,11 @@ public class MusicLibrary implements LibraryInterface {
 
 	@Override
 	public boolean rateArtist(String artistName, int rating) {
-		Artist artist = database.getPlaylist(artistName);
+		Artist artist = database.getArtist(artistName);
 		
 		artist.rate(rating);
 		
-		return database.putPlaylist(artist);
+		return database.putArtist(artist);
 	}
 
 	@Override
@@ -187,5 +188,31 @@ public class MusicLibrary implements LibraryInterface {
 		playlist.addSongList(albumSongs);
 		
 		return database.putPlaylist(playlist);
+	}
+
+	@Override
+	public Song getSong(String songName) {
+		return database.getSong(songName);
+	}
+
+	@Override
+	public Album getAlbum(String albumName) {
+		return database.getAlbum(albumName);
+	}
+
+	@Override
+	public Artist getArtist(String artistName) {
+		return database.getArtist(artistName);
+	}
+
+	@Override
+	public ArrayList<Artist> getSimilarArtist(String artistName) {
+		Artist artist = database.getArtist(artistName);
+		
+		if(artist == null) {
+			return null;
+		}
+		
+		return database.getSimilarArtists(artistName, artist.getArtistData());
 	}
 }

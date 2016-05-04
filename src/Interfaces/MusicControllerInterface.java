@@ -1,6 +1,5 @@
 package Interfaces;
 
-import java.io.File;
 import java.util.ArrayList;
 import Objects.Album;
 import Objects.Artist;
@@ -38,11 +37,7 @@ public interface MusicControllerInterface {
 	
 	boolean				addAllAlbumSongsToPlaylist(String albumName, String playlistName);
 	
-	boolean				addAllArtistSongsToPlaylist(String artistName, String playlistName);
-	
 	ArrayList<Song>		listSongs(String playlistName);
-
-	ArrayList<Song>		listSongsAlbum(String albumName);
 
 	boolean				renamePlaylist(String playlistName, String newPlaylistName);
 
