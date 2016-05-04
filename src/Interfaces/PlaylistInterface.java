@@ -6,9 +6,11 @@ import Objects.Song;
 
 public interface PlaylistInterface {
 	boolean			addSongList(ArrayList<Song> songs);
+	
 	boolean			rate(int rating);
 	
-	// ------------------------
+	boolean			rename(String newName);
+
 	int 			getID();
 	
 	String			getName();

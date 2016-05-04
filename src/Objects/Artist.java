@@ -48,4 +48,15 @@ public class Artist implements ArtistInterface {
 	public String getGenre() {
 		return genre;
 	}
+	
+	@Override
+	public String getArtistData() {
+		return artistName + " " + rating + " " + numberOfSongs + " " + numberOfAlbums;
+	}
+	
+	@Override
+	public boolean rate(int newRating) {
+		rating = newRating;
+		return true;
+	}
 }

@@ -60,4 +60,24 @@ public class Playlist implements PlaylistInterface {
 	public int getRating() {
 		return rating;
 	}
+	
+	@Override
+	public boolean addSongList(ArrayList<Song> songs) {
+		for(Song s: songs) {
+			this.songs.add(s);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean rate(int newRating) {
+		rating = newRating;
+		return true;
+	}
+	
+	@Override
+	public boolean rename(String newName) {
+		playlistName = newName;
+		return true;
+	}
 }

@@ -91,4 +91,24 @@ public class Song implements SongInterface {
 	public int getRating() {
 		return rating;
 	}
+	
+	@Override
+	public String compare(Song song2) {
+		String comparison = name + " - " + song2.name + "\n"
+						  + artist + " - " + song2.artist + "\n"
+						  + album + " - " + song2.album + "\n"
+						  + duration + " - " + song2.duration + "\n";
+		return comparison;
+	}
+	
+	@Override
+	public boolean rate(int newRating) {
+		rating = newRating;
+		return true;
+	}
+	
+	@Override
+	public String getSongData() {
+		return name + artist + album + duration;
+	}
 }

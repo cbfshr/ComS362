@@ -1,6 +1,7 @@
 package Objects;
 
 import java.util.ArrayList;
+
 import Interfaces.AlbumInterface;
 
 public class Album implements AlbumInterface{
@@ -61,5 +62,29 @@ public class Album implements AlbumInterface{
 	@Override
 	public int getNumberOfSongs() {
 		return numberOfSongs;
+	}
+	
+	@Override
+	public String getAlbumData() {
+		return albumName + " " + rating + " " + numberOfSongs + " " + releaseDate;
+	}
+	
+	@Override
+	public String getTrackList() {
+		return songs.toString();
+	}
+	
+	@Override
+	public String compare(Album album2) {
+		return albumName + " " + album2.albumName + " " + 
+			   rating + " " + album2.rating + " " + 
+			   numberOfSongs + " " + album2.numberOfSongs + " " + 
+			   releaseDate + " " + album2.releaseDate;
+	}
+	
+	@Override
+	public boolean rate(int newRating) {
+		rating = newRating;
+		return true;
 	}
 }

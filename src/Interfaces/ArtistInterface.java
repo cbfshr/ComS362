@@ -1,10 +1,11 @@
 package Interfaces;
 
 public interface ArtistInterface {
+	
 	String getArtistData();
-	boolean			rate(int rating);	
+	
+	boolean	rate(int rating);	
 
-	// -----------------
 	public int getArtistID();
 	
 	public String getArtistName();
